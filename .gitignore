@@ -8,7 +8,6 @@
 !.yarn/versions
 
 # Log files
-logs
 *.log
 yarn-debug.log*
 yarn-error.log*
@@ -17,3 +16,8 @@ yarn-error.log*
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
+
+# Docker compose
+/.docker/*
+/.env
+/docker-compose.override.yml
