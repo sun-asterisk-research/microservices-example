@@ -18,6 +18,7 @@ yarn-error.log*
 !.vscode/settings.json
 
 # Docker compose
-/.docker/*
-/.env
-/docker-compose.override.yml
+.docker/*
+!.docker/db-init
+.env
+docker-compose.override.yml

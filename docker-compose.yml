@@ -33,8 +33,8 @@ services:
     image: hasura/graphql-engine:v2.16.1
     restart: unless-stopped
     environment:
-      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://hasura:secret@postgres:5432/hasura
-      PG_DATABASE_URL: postgres://hasura:secret@postgres:5432/hasura
+      HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://hasura:secret@postgresql:5432/hasura
+      PG_DATABASE_URL: postgres://hasura:secret@postgresql:5432/hasura
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
@@ -44,7 +44,7 @@ services:
     - traefik.http.routers.hasura.rule=Host(`${HASURA_DOMAIN}`)
     - traefik.http.services.hasura.loadbalancer.server.port=8080
 
-  postgres:
+  postgresql:
     image: postgres:14-alpine
     restart: unless-stopped
     environment:
@@ -54,3 +54,4 @@ services:
     volumes:
     - .docker/data/postgresql:/var/lib/postgresql/data
     - .docker/run/postgresql:/var/run/postgresql
+    - .docker/db-init:/docker-entrypoint-initdb.d
