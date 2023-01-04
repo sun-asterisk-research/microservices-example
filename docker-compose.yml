@@ -28,6 +28,10 @@ services:
     working_dir: /app
     volumes:
     - .:/app
+    labels:
+    - traefik.enable=true
+    - traefik.http.routers.users.rule=Host(`users.localhost`)
+    - traefik.http.services.users.loadbalancer.server.port=8080
 
   hasura:
     image: hasura/graphql-engine:v2.16.1
