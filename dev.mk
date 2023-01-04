@@ -1,4 +1,4 @@
-_DEV_TARGETS := up down sh clean
+_DEV_TARGETS := up down sh clean db-init install
 _DEV_CONTAINERS := web api
 _DEV_VOLUMES := .docker/data .docker/run/postgresql
 
@@ -32,6 +32,12 @@ endif
 
 down:
 	$(DOCKER_COMPOSE) down --remove-orphans
+
+install:
+	@$(DOCKER_COMPOSE) exec -it -e USER=$$USER -e HOME=/tmp api yarn
+
+db-init:
+	@cat .docker/db-init/db-init.sql | $(DOCKER_COMPOSE) exec -iT postgresql bash -c 'psql -U$$POSTGRES_USER -d $$POSTGRES_DB'
 
 sh:
 	@($(DOCKER_COMPOSE) exec -it $(SH_EXEC_OPTS) $(SH_CONTAINER) sh -c "command -v bash >/dev/null && exec bash --login || exec sh") || true

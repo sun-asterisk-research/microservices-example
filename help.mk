@@ -5,11 +5,12 @@ Usage:
   make [TARGET] [OPTION=VALUE...]
 
 Targets:
-  help   This help message
-  up     Bring the development stack up
-  down   Stop and remove development containers
-  sh     Spawn a shell and exec into a container
-  clean  Stop containers and remove all data
+  help     This help message
+  up       Bring the development stack up
+  down     Stop and remove development containers
+  sh       Spawn a shell and exec into a container
+  db-init  Run the database init script
+  clean    Stop containers and remove all data
 
 Run "make help [TARGET]" to see help for a specific target
 endef
