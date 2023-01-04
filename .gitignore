@@ -22,3 +22,6 @@ yarn-error.log*
 !.docker/db-init
 .env
 docker-compose.override.yml
+
+# Hasura
+hasura/metadata/databases
