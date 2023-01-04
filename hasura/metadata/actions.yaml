@@ -20,8 +20,15 @@ actions:
         template_engine: Kriti
         version: 2
     comment: Just say "Hello world!"
+  - name: login
+    definition:
+      kind: synchronous
+      handler: http://api:8080/login
+      timeout: 5
 custom_types:
   enums: []
-  input_objects: []
-  objects: []
+  input_objects:
+    - name: LoginInput
+  objects:
+    - name: LoginOutput
   scalars: []
