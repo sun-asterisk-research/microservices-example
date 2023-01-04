@@ -1,8 +1,8 @@
-_DEV_TARGETS := up down sh clean
+_DEV_DOCKER_TARGETS := up down sh clean db-init
 _DEV_CONTAINERS := web api
 _DEV_VOLUMES := .docker/data .docker/run/postgresql
 
-ifneq (,$(filter $(_DEV_TARGETS),$(firstword $(MAKECMDGOALS))))
+ifneq (,$(filter $(_DEV_DOCKER_TARGETS),$(firstword $(MAKECMDGOALS))))
 	ifeq (true, $(shell docker compose version > /dev/null 2>&1 && echo true))
 		DOCKER_COMPOSE := docker compose
 	else ifeq (true, $(shell docker-compose version > /dev/null 2>&1 && echo true))
@@ -35,6 +35,9 @@ down:
 
 sh:
 	@($(DOCKER_COMPOSE) exec -it $(SH_EXEC_OPTS) $(SH_CONTAINER) sh -c "command -v bash >/dev/null && exec bash --login || exec sh") || true
+
+db-init:
+	@cat .docker/db-init/db-init.sql | $(DOCKER_COMPOSE) exec -iT postgresql bash -c 'psql -U$$POSTGRES_USER -d $$POSTGRES_DB'
 
 clear-data:
 	sudo rm -rf $(_DEV_VOLUMES)
