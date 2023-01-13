@@ -1,0 +1,15 @@
+overwrite: true
+schema: ${GRAPHQL_API_HOST}
+documents: "**/*.{gql,graphql}"
+generates:
+  ./graphql/generated/schema.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    overwrite: true
+    config:
+      withHooks: true
+      enumsAsConst: true
+      namingConvention:
+        enumValues: keep

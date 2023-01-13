@@ -1,0 +1,9 @@
+query StoriesForHome {
+  stories {
+    hashid
+    title
+    previewImage
+    previewContent
+    createdAt
+  }
+}
