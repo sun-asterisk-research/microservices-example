@@ -25,3 +25,4 @@ docker-compose.override.yml
 
 # Hasura
 hasura/metadata/databases
+packages/*/.yarn
