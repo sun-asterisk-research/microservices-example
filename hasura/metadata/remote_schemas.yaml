@@ -1,6 +1,1 @@
-- name: Webee GraphQL
-  definition:
-    url: https://worker-apollo-server.webee-asia.workers.dev/
-    timeout_seconds: 30
-    customization: {}
-    forward_client_headers: true
+[]

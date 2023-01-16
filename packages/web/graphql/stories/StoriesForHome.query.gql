@@ -1,9 +1,16 @@
 query StoriesForHome {
   stories {
-    hashid
-    title
-    previewImage
-    previewContent
-    createdAt
+    stories {
+      hashid
+      title
+      previewImage
+      previewContent
+      createdAt
+      author {
+        username
+        fullname
+        avatar
+      }
+    }
   }
 }
