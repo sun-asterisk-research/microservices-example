@@ -43,7 +43,7 @@ services:
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_CONSOLE_ASSETS_DIR: /srv/console-assets
-      HASURA_GRAPHQL_EXPERIMENTAL_FEATURES: naming_convention
+      HASURA_GRAPHQL_EXPERIMENTAL_FEATURES: naming_convention, apollo_federation
     labels:
     - traefik.enable=true
     - traefik.http.routers.hasura.rule=Host(`${HASURA_DOMAIN}`)
