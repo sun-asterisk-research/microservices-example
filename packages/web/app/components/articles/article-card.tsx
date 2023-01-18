@@ -49,28 +49,29 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface ArticleCardProps {
-  link: string;
-  image: string;
   story: any;
   rating?: string;
 }
 
 export default function ArticleCard({
   className,
-  image,
   story,
-  link,
   rating,
   ...others
 }: ArticleCardProps & Omit<React.ComponentPropsWithoutRef<'div'>, keyof ArticleCardProps>) {
   const { classes, cx, theme } = useStyles();
-  const linkProps = { href: link, target: '_blank', rel: 'noopener noreferrer' };
+  const imageURL = `https://images.viblo.asia/${story.previewImage}`;
+  const linkProps = {
+    href: 'http://localhost:8787',
+    target: '_blank',
+    rel: 'noopener noreferrer',
+  };
 
   return (
     <Card radius={0} className={cx(classes.card, className)} {...others}>
       <Card.Section>
         <a {...linkProps}>
-          <Image src={`https://images.viblo.asia/${story.previewImage}`} height={180} />
+          <Image src={imageURL} height={180} />
         </a>
       </Card.Section>
 
@@ -92,7 +93,7 @@ export default function ArticleCard({
 
       <Group position="apart" className={classes.footer}>
         <Center>
-          <Avatar src={image} size={24} radius="xl" mr="xs" />
+          <Avatar src={imageURL} size={24} radius="xl" mr="xs" />
           <Text size="sm" inline>
             {story.author?.name}
           </Text>

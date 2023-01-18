@@ -57,13 +57,11 @@ export default function Index() {
               { maxWidth: 'lg', cols: 3 },
             ]}
           >
-            {data?.stories.map((story, index: number) => {
+            {data?.stories?.stories.map((story, index: number) => {
               return (
                 <ArticleCard
                   key={index}
                   story={story}
-                  image="https://i.imgur.com/Cij5vdL.png"
-                  link="http://localhost:8787"
                 />
               )
             })}
