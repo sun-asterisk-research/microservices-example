@@ -1,28 +1,7 @@
-# Yarn berry non zero-install
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-
 # Log files
 *.log
 yarn-debug.log*
 yarn-error.log*
 
 # VS Code
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-
-# Docker compose
-.docker/*
-!.docker/db-init
-.env
-docker-compose.override.yml
-
-# Hasura
-hasura/metadata/databases
-packages/*/.yarn
+.vscode

@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package recommendations;
+
+message ListStoriesForHomeRequest {
+  int32 account_id = 1;
+}
+
+message ListStoriesForHomeReply {
+  int32 account_id = 1;
+}
+
+message ListRelatedStoriesRequest {
+  string hashid = 1;
+}
+
+message ListRelatedStoriesReply {
+  repeated int32 story_ids = 1;
+}
+
+message ListAuthorsRequest {
+  int32 account_id = 1;
+}
+
+message ListAuthorsReply {
+  repeated int32 account_ids = 1;
+}
+
+service Recommendations {
+  rpc ListStoriesForHome(ListStoriesForHomeRequest) returns (ListStoriesForHomeReply);
+  rpc ListRelatedStories(ListRelatedStoriesRequest) returns (ListRelatedStoriesReply);
+  rpc ListAuthors(ListAuthorsRequest) returns (ListAuthorsReply);
+}
