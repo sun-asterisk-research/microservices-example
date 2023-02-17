@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package account;
+
+option go_package = "./pb";
+
+// --------------------Accounts service--------------------
+
+message SignUpRequest {
+  string fullname = 1;
+  string email = 2;
+  string username = 3;
+  string password = 4;
+  string confirm_password = 5;
+  bool terms_of_service = 6;
+}
+
+message SignUpResponse {
+  bool success = 1;
+}
+
+message GetTokenRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message GetTokenResponse {
+  bool success = 1;
+  string access_token = 2;
+}
+
+service Account {
+  rpc SignUp(SignUpRequest) returns (SignUpResponse);
+  rpc GetToken(GetTokenRequest) returns (GetTokenResponse);
+}
