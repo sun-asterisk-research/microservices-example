@@ -1,0 +1,129 @@
+- name: account-subgraph
+  definition:
+    url: http://account-subgraph
+    timeout_seconds: 10
+    customization:
+      root_fields_namespace: account_service
+  permissions:
+    - role: user
+      definition:
+        schema: |
+          schema {
+            query: QueryRoot
+          }
+          type QueryRoot {
+            sayHello(name: String!): String!
+          }
+    - role: anonymous
+      definition:
+        schema: |
+          schema {
+            query: QueryRoot
+            mutation: Mutation
+          }
+          type GetTokenResponse {
+            accessToken: String!
+            success: Boolean!
+          }
+          type Mutation {
+            getToken(input: GetTokenRequest!): GetTokenResponse!
+            signUp(input: SignUpRequest!): SignUpResponse!
+          }
+          type QueryRoot {
+            sayHello(name: String!): String!
+          }
+          type SignUpResponse {
+            success: Boolean!
+          }
+          input GetTokenRequest {
+            password: String!
+            username: String!
+          }
+          input SignUpRequest {
+            confirmPassword: String!
+            email: String!
+            fullname: String!
+            password: String!
+            termsOfService: Boolean!
+            username: String!
+          }
+- name: contents-view-subgraph
+  definition:
+    url: http://contents-view-subgraph
+    timeout_seconds: 10
+    customization:
+      root_fields_namespace: contents_view
+  permissions:
+    - role: user
+      definition:
+        schema: |
+          schema {
+            query: Query
+          }
+          type Query {
+            contentsView(id: Int!, type: String!, contents: String!): String
+          }
+    - role: author
+      definition:
+        schema: |
+          schema {
+            query: Query
+          }
+          type Query {
+            contentsView(id: Int!, type: String!, contents: String!): String
+          }
+- name: views-count-subgraph
+  definition:
+    url: http://views-count-subgraph
+    timeout_seconds: 10
+    customization:
+      root_fields_namespace: views_count
+  permissions:
+    - role: user
+      definition:
+        schema: |
+          schema {
+            query: Query
+            mutation: Mutation
+          }
+          type Mutation {
+            incrementStoryView(hashid: String!): StatusResponse
+          }
+          type Query {
+            healthcheck: String!
+          }
+          type StatusResponse {
+            success: Boolean!
+          }
+    - role: author
+      definition:
+        schema: |
+          schema {
+            query: Query
+            mutation: Mutation
+          }
+          type Mutation {
+            incrementStoryView(hashid: String!): StatusResponse
+          }
+          type Query {
+            healthcheck: String!
+          }
+          type StatusResponse {
+            success: Boolean!
+          }
+    - role: anonymous
+      definition:
+        schema: |
+          schema {
+            query: Query
+            mutation: Mutation
+          }
+          type Mutation {
+            incrementStoryView(hashid: String!): StatusResponse
+          }
+          type Query {
+            healthcheck: String!
+          }
+          type StatusResponse {
+            success: Boolean!
+          }

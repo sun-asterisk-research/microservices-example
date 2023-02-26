@@ -1,0 +1,24 @@
+- name: accounts
+  kind: postgres
+  configuration:
+    connection_info:
+      database_url: postgresql://hasura:secret@postgres:5432/accounts
+      isolation_level: read-committed
+      use_prepared_statements: false
+  customization:
+    naming_convention: graphql-default
+    root_fields:
+      namespace: accounts
+  tables: "!include accounts/tables/tables.yaml"
+- name: stories
+  kind: postgres
+  configuration:
+    connection_info:
+      database_url: postgresql://hasura:secret@postgres:5432/stories
+      isolation_level: read-committed
+      use_prepared_statements: false
+  customization:
+    naming_convention: graphql-default
+    root_fields:
+      namespace: stories
+  tables: "!include stories/tables/tables.yaml"

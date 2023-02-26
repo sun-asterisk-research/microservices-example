@@ -1,0 +1,131 @@
+table:
+  name: stories
+  schema: public
+remote_relationships:
+  - definition:
+      to_source:
+        field_mapping:
+          user_id: id
+        relationship_type: object
+        source: accounts
+        table:
+          name: accounts
+          schema: public
+    name: author
+  - definition:
+      hasura_fields:
+        - contents
+        - id
+      remote_field:
+        contentsView:
+          arguments:
+            contents: $contents
+            id: $id
+            type: stories
+      remote_schema: contents-view-subgraph
+    name: contentsHTML
+insert_permissions:
+  - role: author
+    permission:
+      check:
+        user_id:
+          _eq: X-Hasura-User-Id
+      columns:
+        - contents
+        - preview_content
+        - preview_image
+        - status
+        - title
+        - user_id
+  - role: user
+    permission:
+      check:
+        user_id:
+          _eq: X-Hasura-User-Id
+      columns:
+        - contents
+        - created_at
+        - preview_content
+        - preview_image
+        - published_at
+        - status
+        - title
+        - updated_at
+select_permissions:
+  - role: author
+    permission:
+      columns:
+        - contents
+        - created_at
+        - hashid
+        - id
+        - preview_content
+        - preview_image
+        - published_at
+        - status
+        - title
+        - updated_at
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      limit: 40
+  - role: user
+    permission:
+      columns:
+        - contents
+        - hashid
+        - id
+        - preview_content
+        - preview_image
+        - published_at
+        - status
+        - title
+        - user_id
+      filter:
+        status:
+          _eq: public
+      limit: 40
+update_permissions:
+  - role: author
+    permission:
+      columns:
+        - contents
+        - preview_content
+        - preview_image
+        - status
+        - title
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check:
+        user_id:
+          _eq: X-Hasura-User-Id
+  - role: user
+    permission:
+      columns:
+        - contents
+        - created_at
+        - preview_content
+        - preview_image
+        - published_at
+        - status
+        - title
+        - updated_at
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check: null
+delete_permissions:
+  - role: author
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+  - role: user
+    permission:
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+apollo_federation_config:
+  enable: v1

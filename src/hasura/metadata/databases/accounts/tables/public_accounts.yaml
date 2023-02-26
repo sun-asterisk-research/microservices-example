@@ -1,0 +1,45 @@
+table:
+  name: accounts
+  schema: public
+select_permissions:
+  - role: anonymous
+    permission:
+      columns:
+        - avatar
+        - fullname
+        - username
+      filter: {}
+  - role: author
+    permission:
+      columns:
+        - avatar
+        - birthday
+        - created_at
+        - email
+        - email_verified_at
+        - fullname
+        - id
+        - updated_at
+        - username
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+  - role: user
+    permission:
+      columns:
+        - avatar
+        - fullname
+        - username
+      filter: {}
+update_permissions:
+  - role: author
+    permission:
+      columns:
+        - avatar
+        - birthday
+        - fullname
+        - username
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: {}
