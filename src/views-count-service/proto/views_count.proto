@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package views_count;
+
+message IncrementStoryViewRequest {
+  string hashid = 1;
+  string fingerprint = 2;
+}
+
+message Empty {};
+
+service ViewsCount {
+  rpc IncrementStoryView(IncrementStoryViewRequest) returns (Empty);
+}
