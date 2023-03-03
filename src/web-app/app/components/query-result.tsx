@@ -1,6 +1,6 @@
 import type { ApolloError } from '@apollo/client';
-import { Box, LoadingOverlay } from '@mantine/core';
-import _isEmpty from 'lodash/isEmpty';
+import { Flex, LoadingOverlay } from '@mantine/core';
+import { isEmpty } from 'lodash';
 
 interface QueryResultProps {
   loading: boolean;
@@ -18,15 +18,17 @@ const QueryResult = ({ loading, error, data, children }: QueryResultProps) => {
     return <p className="text-red2">ERROR: {error.message}</p>;
   }
 
-  if (loading && _isEmpty(data)) {
+  const isEmptyData = isEmpty(data);
+
+  if (loading) {
     return (
-      <Box sx={{alignItems: "center", justifyContent: "center", minHeight: '100vh', position: 'relative'}}>
+      <Flex align="center" justify="center" mih="100vh" pos="relative">
         <LoadingOverlay overlayBlur={2} visible />
-      </Box>
+      </Flex>
     );
   }
 
-  if (_isEmpty(data)) {
+  if (isEmptyData) {
     return <p>Nothing to show...</p>;
   }
 

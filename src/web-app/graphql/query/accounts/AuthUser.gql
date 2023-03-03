@@ -1,0 +1,9 @@
+query AuthUser {
+  accounts {
+    accounts(limit: 1) {
+      username
+      fullname
+      avatar
+    }
+  }
+}

@@ -12,8 +12,12 @@ export const headers: HeadersFunction = () => {
   };
 };
 
-export default function Index() {
-  const { data, loading, error } = useStoriesForHomeQuery();
+export default function IndexPage() {
+  const { data, loading, error } = useStoriesForHomeQuery({
+    variables: {
+      // offset:
+    }
+  });
 
   return (
     <Box>

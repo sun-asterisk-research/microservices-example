@@ -2,7 +2,7 @@ import { Box, Title } from "@mantine/core"
 import { useLocation } from "@remix-run/react";
 import Chipbar from "~/components/chipbar";
 
-export default function Index() {
+export default function ViewTagPage() {
   const location = useLocation();
 
   return (

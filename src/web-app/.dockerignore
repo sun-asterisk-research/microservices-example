@@ -9,5 +9,6 @@ yarn-error.log
 /.mf
 .env
 .vscode
+.git
 
 graphql/generated

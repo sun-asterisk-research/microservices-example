@@ -1,11 +1,11 @@
-query StoriesForHome {
+query StoriesForHome($offset: Int) {
   stories {
-    stories {
+    stories(limit: 12, offset: $offset, orderBy: {publishedAt: DESC}) {
       hashid
       title
       previewImage
       previewContent
-      createdAt
+      publishedAt
       author {
         username
         fullname

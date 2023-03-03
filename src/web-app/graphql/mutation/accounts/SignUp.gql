@@ -1,0 +1,7 @@
+mutation SignUp($input: SignUpRequest!) {
+  account_service {
+    signUp(input: $input) {
+      success
+    }
+  }
+}

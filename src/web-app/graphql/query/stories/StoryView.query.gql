@@ -1,0 +1,15 @@
+query StoryView($hashid: String!) {
+  stories {
+    stories(limit: 1, where: {hashid: {_eq: $hashid}}) {
+      title
+      hashid
+      publishedAt
+      contentsHTML
+      author {
+        fullname
+        username
+        avatar
+      }
+    }
+  }
+}

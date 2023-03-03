@@ -9,7 +9,10 @@ import {
   Center,
   Avatar,
   createStyles,
+  Title,
+  Anchor,
 } from '@mantine/core';
+import { Link } from '@remix-run/react';
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -27,6 +30,7 @@ const useStyles = createStyles((theme) => ({
   title: {
     display: 'block',
     fontSize: '1.125rem',
+    color: 'black',
     marginTop: theme.spacing.md,
     marginBottom: theme.spacing.xs / 2,
     [theme.fn.smallerThan('sm')]: {
@@ -60,19 +64,17 @@ export default function ArticleCard({
   ...others
 }: ArticleCardProps & Omit<React.ComponentPropsWithoutRef<'div'>, keyof ArticleCardProps>) {
   const { classes, cx, theme } = useStyles();
-  const imageURL = `https://images.viblo.asia/${story.previewImage}`;
-  const linkProps = {
-    href: 'http://localhost:8787',
-    target: '_blank',
-    rel: 'noopener noreferrer',
-  };
+
+  const avatarURL = story.author?.avatar
+    ? `https://images.viblo.asia/64/${story.author?.avatar}`
+    : null
 
   return (
     <Card radius={0} className={cx(classes.card, className)} {...others}>
       <Card.Section>
-        <a {...linkProps}>
-          <Image src={imageURL} height={180} />
-        </a>
+        <Link to={`/p/${story.hashid}`} prefetch="intent">
+          <Image src={story.previewImage || 'https://viblo.asia/og-facebook-3.png'} height={180} />
+        </Link>
       </Card.Section>
 
       {
@@ -83,21 +85,25 @@ export default function ArticleCard({
         )
       }
 
-      <Text className={classes.title} weight="bold" component="a" {...linkProps}>
-        {story.title}
-      </Text>
+      <Anchor component={Link} to={`/p/${story.hashid}`} prefetch="intent" underline={false}>
+        <Title order={2} className={classes.title} weight="bold">
+          {story.title}
+        </Title>
+      </Anchor>
 
       <Text size="sm" color="#292929" lineClamp={4}>
         {story.previewContent}
       </Text>
 
       <Group position="apart" className={classes.footer}>
-        <Center>
-          <Avatar src={imageURL} size={24} radius="xl" mr="xs" />
-          <Text size="sm" inline>
-            {story.author?.name}
-          </Text>
-        </Center>
+        <Anchor component={Link} to={`/u/${story.author?.username}`} prefetch="intent" underline={false}>
+          <Center>
+            <Avatar src={avatarURL} size={24} radius="xl" mr="xs" />
+            <Text size="sm" inline color={"black"}>
+              {story.author?.fullname}
+            </Text>
+          </Center>
+        </Anchor>
 
         <Group spacing={8} mr={0}>
           <ActionIcon className={classes.action}>

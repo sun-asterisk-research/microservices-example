@@ -1,0 +1,1264 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """measured in seconds"""
+  ttl: Int! = 60
+
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+) on QUERY
+
+"""
+columns and relationships of "accounts"
+"""
+type Accounts {
+  avatar: String
+  birthday: timestamptz
+  createdAt: timestamptz!
+  email: String!
+  emailVerifiedAt: timestamptz
+  fullname: String!
+  id: Int!
+  passwordHash: String
+  updatedAt: timestamptz!
+  username: String!
+}
+
+"""
+aggregated selection of "accounts"
+"""
+type AccountsAggregate {
+  aggregate: AccountsAggregateFields
+  nodes: [Accounts!]!
+}
+
+"""
+aggregate fields of "accounts"
+"""
+type AccountsAggregateFields {
+  avg: AccountsAvgFields
+  count(columns: [AccountsSelectColumn!], distinct: Boolean): Int!
+  max: AccountsMaxFields
+  min: AccountsMinFields
+  stddev: AccountsStddevFields
+  stddevPop: AccountsStddev_popFields
+  stddevSamp: AccountsStddev_sampFields
+  sum: AccountsSumFields
+  varPop: AccountsVar_popFields
+  varSamp: AccountsVar_sampFields
+  variance: AccountsVarianceFields
+}
+
+"""aggregate avg on columns"""
+type AccountsAvgFields {
+  id: Float
+}
+
+"""
+Boolean expression to filter rows from the table "accounts". All fields are combined with a logical 'AND'.
+"""
+input AccountsBoolExp {
+  _and: [AccountsBoolExp!]
+  _not: AccountsBoolExp
+  _or: [AccountsBoolExp!]
+  avatar: StringComparisonExp
+  birthday: TimestamptzComparisonExp
+  createdAt: TimestamptzComparisonExp
+  email: StringComparisonExp
+  emailVerifiedAt: TimestamptzComparisonExp
+  fullname: StringComparisonExp
+  id: IntComparisonExp
+  passwordHash: StringComparisonExp
+  updatedAt: TimestamptzComparisonExp
+  username: StringComparisonExp
+}
+
+"""
+unique or primary key constraints on table "accounts"
+"""
+enum AccountsConstraint {
+  """
+  unique or primary key constraint on columns "email"
+  """
+  accounts_email_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  accounts_pkey
+
+  """
+  unique or primary key constraint on columns "username"
+  """
+  accounts_username_key
+}
+
+"""
+input type for incrementing numeric columns in table "accounts"
+"""
+input AccountsIncInput {
+  id: Int
+}
+
+"""
+input type for inserting data into table "accounts"
+"""
+input AccountsInsertInput {
+  avatar: String
+  birthday: timestamptz
+  createdAt: timestamptz
+  email: String
+  emailVerifiedAt: timestamptz
+  fullname: String
+  id: Int
+  passwordHash: String
+  updatedAt: timestamptz
+  username: String
+}
+
+"""aggregate max on columns"""
+type AccountsMaxFields {
+  avatar: String
+  birthday: timestamptz
+  createdAt: timestamptz
+  email: String
+  emailVerifiedAt: timestamptz
+  fullname: String
+  id: Int
+  passwordHash: String
+  updatedAt: timestamptz
+  username: String
+}
+
+"""aggregate min on columns"""
+type AccountsMinFields {
+  avatar: String
+  birthday: timestamptz
+  createdAt: timestamptz
+  email: String
+  emailVerifiedAt: timestamptz
+  fullname: String
+  id: Int
+  passwordHash: String
+  updatedAt: timestamptz
+  username: String
+}
+
+"""
+response of any mutation on the table "accounts"
+"""
+type AccountsMutationResponse {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [Accounts!]!
+}
+
+"""
+on_conflict condition type for table "accounts"
+"""
+input AccountsOnConflict {
+  constraint: AccountsConstraint!
+  update_columns: [AccountsUpdateColumn!]! = []
+  where: AccountsBoolExp
+}
+
+"""Ordering options when selecting data from "accounts"."""
+input AccountsOrderBy {
+  avatar: OrderBy
+  birthday: OrderBy
+  createdAt: OrderBy
+  email: OrderBy
+  emailVerifiedAt: OrderBy
+  fullname: OrderBy
+  id: OrderBy
+  passwordHash: OrderBy
+  updatedAt: OrderBy
+  username: OrderBy
+}
+
+"""primary key columns input for table: accounts"""
+input AccountsPkColumnsInput {
+  id: Int!
+}
+
+"""
+select columns of table "accounts"
+"""
+enum AccountsSelectColumn {
+  """column name"""
+  avatar
+
+  """column name"""
+  birthday
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  email
+
+  """column name"""
+  emailVerifiedAt
+
+  """column name"""
+  fullname
+
+  """column name"""
+  id
+
+  """column name"""
+  passwordHash
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  username
+}
+
+"""
+input type for updating data in table "accounts"
+"""
+input AccountsSetInput {
+  avatar: String
+  birthday: timestamptz
+  createdAt: timestamptz
+  email: String
+  emailVerifiedAt: timestamptz
+  fullname: String
+  id: Int
+  passwordHash: String
+  updatedAt: timestamptz
+  username: String
+}
+
+"""aggregate stddev on columns"""
+type AccountsStddevFields {
+  id: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type AccountsStddev_popFields {
+  id: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type AccountsStddev_sampFields {
+  id: Float
+}
+
+"""
+Streaming cursor of the table "accounts"
+"""
+input AccountsStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: AccountsStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input AccountsStreamCursorValueInput {
+  avatar: String
+  birthday: timestamptz
+  createdAt: timestamptz
+  email: String
+  emailVerifiedAt: timestamptz
+  fullname: String
+  id: Int
+  passwordHash: String
+  updatedAt: timestamptz
+  username: String
+}
+
+"""aggregate sum on columns"""
+type AccountsSumFields {
+  id: Int
+}
+
+"""
+update columns of table "accounts"
+"""
+enum AccountsUpdateColumn {
+  """column name"""
+  avatar
+
+  """column name"""
+  birthday
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  email
+
+  """column name"""
+  emailVerifiedAt
+
+  """column name"""
+  fullname
+
+  """column name"""
+  id
+
+  """column name"""
+  passwordHash
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  username
+}
+
+input AccountsUpdates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: AccountsIncInput
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: AccountsSetInput
+
+  """filter the rows which have to be updated"""
+  where: AccountsBoolExp!
+}
+
+"""aggregate var_pop on columns"""
+type AccountsVar_popFields {
+  id: Float
+}
+
+"""aggregate var_samp on columns"""
+type AccountsVar_sampFields {
+  id: Float
+}
+
+"""aggregate variance on columns"""
+type AccountsVarianceFields {
+  id: Float
+}
+
+"""
+Boolean expression to compare columns of type "content_status". All fields are combined with logical 'AND'.
+"""
+input ContentStatusComparisonExp {
+  _eq: content_status
+  _gt: content_status
+  _gte: content_status
+  _in: [content_status!]
+  _isNull: Boolean
+  _lt: content_status
+  _lte: content_status
+  _neq: content_status
+  _nin: [content_status!]
+}
+
+"""ordering argument of a cursor"""
+enum CursorOrdering {
+  """ascending ordering of the cursor"""
+  ASC
+
+  """descending ordering of the cursor"""
+  DESC
+}
+
+input GetTokenRequest {
+  password: String!
+  username: String!
+}
+
+type GetTokenResponse {
+  accessToken: String!
+  success: Boolean!
+}
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input IntComparisonExp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _isNull: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""column ordering options"""
+enum OrderBy {
+  """in ascending order, nulls last"""
+  ASC
+
+  """in ascending order, nulls first"""
+  ASC_NULLS_FIRST
+
+  """in ascending order, nulls last"""
+  ASC_NULLS_LAST
+
+  """in descending order, nulls first"""
+  DESC
+
+  """in descending order, nulls first"""
+  DESC_NULLS_FIRST
+
+  """in descending order, nulls last"""
+  DESC_NULLS_LAST
+}
+
+input SignUpRequest {
+  confirmPassword: String!
+  email: String!
+  fullname: String!
+  password: String!
+  termsOfService: Boolean!
+  username: String!
+}
+
+type SignUpResponse {
+  success: Boolean!
+}
+
+type StatusResponse {
+  success: Boolean!
+}
+
+"""
+columns and relationships of "stories"
+"""
+type Stories {
+  author: Accounts
+  contents: String!
+  contentsHTML: String
+  createdAt: timestamptz!
+  hashid: String!
+  id: Int!
+  previewContent: String
+  previewImage: String
+  publishedAt: timestamptz
+  status: content_status!
+  title: String!
+  updatedAt: timestamptz!
+  userId: Int!
+}
+
+"""
+aggregated selection of "stories"
+"""
+type StoriesAggregate {
+  aggregate: StoriesAggregateFields
+  nodes: [Stories!]!
+}
+
+"""
+aggregate fields of "stories"
+"""
+type StoriesAggregateFields {
+  avg: StoriesAvgFields
+  count(columns: [StoriesSelectColumn!], distinct: Boolean): Int!
+  max: StoriesMaxFields
+  min: StoriesMinFields
+  stddev: StoriesStddevFields
+  stddevPop: StoriesStddev_popFields
+  stddevSamp: StoriesStddev_sampFields
+  sum: StoriesSumFields
+  varPop: StoriesVar_popFields
+  varSamp: StoriesVar_sampFields
+  variance: StoriesVarianceFields
+}
+
+"""aggregate avg on columns"""
+type StoriesAvgFields {
+  id: Float
+  userId: Float
+}
+
+"""
+Boolean expression to filter rows from the table "stories". All fields are combined with a logical 'AND'.
+"""
+input StoriesBoolExp {
+  _and: [StoriesBoolExp!]
+  _not: StoriesBoolExp
+  _or: [StoriesBoolExp!]
+  contents: StringComparisonExp
+  createdAt: TimestamptzComparisonExp
+  hashid: StringComparisonExp
+  id: IntComparisonExp
+  previewContent: StringComparisonExp
+  previewImage: StringComparisonExp
+  publishedAt: TimestamptzComparisonExp
+  status: ContentStatusComparisonExp
+  title: StringComparisonExp
+  updatedAt: TimestamptzComparisonExp
+  userId: IntComparisonExp
+}
+
+"""
+unique or primary key constraints on table "stories"
+"""
+enum StoriesConstraint {
+  """
+  unique or primary key constraint on columns "hashid"
+  """
+  stories_hashid_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  stories_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "stories"
+"""
+input StoriesIncInput {
+  id: Int
+  userId: Int
+}
+
+"""
+input type for inserting data into table "stories"
+"""
+input StoriesInsertInput {
+  contents: String
+  createdAt: timestamptz
+  hashid: String
+  id: Int
+  previewContent: String
+  previewImage: String
+  publishedAt: timestamptz
+  status: content_status
+  title: String
+  updatedAt: timestamptz
+  userId: Int
+}
+
+"""aggregate max on columns"""
+type StoriesMaxFields {
+  contents: String
+  createdAt: timestamptz
+  hashid: String
+  id: Int
+  previewContent: String
+  previewImage: String
+  publishedAt: timestamptz
+  status: content_status
+  title: String
+  updatedAt: timestamptz
+  userId: Int
+}
+
+"""aggregate min on columns"""
+type StoriesMinFields {
+  contents: String
+  createdAt: timestamptz
+  hashid: String
+  id: Int
+  previewContent: String
+  previewImage: String
+  publishedAt: timestamptz
+  status: content_status
+  title: String
+  updatedAt: timestamptz
+  userId: Int
+}
+
+"""
+response of any mutation on the table "stories"
+"""
+type StoriesMutationResponse {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [Stories!]!
+}
+
+"""
+on_conflict condition type for table "stories"
+"""
+input StoriesOnConflict {
+  constraint: StoriesConstraint!
+  update_columns: [StoriesUpdateColumn!]! = []
+  where: StoriesBoolExp
+}
+
+"""Ordering options when selecting data from "stories"."""
+input StoriesOrderBy {
+  contents: OrderBy
+  createdAt: OrderBy
+  hashid: OrderBy
+  id: OrderBy
+  previewContent: OrderBy
+  previewImage: OrderBy
+  publishedAt: OrderBy
+  status: OrderBy
+  title: OrderBy
+  updatedAt: OrderBy
+  userId: OrderBy
+}
+
+"""primary key columns input for table: stories"""
+input StoriesPkColumnsInput {
+  id: Int!
+}
+
+"""
+select columns of table "stories"
+"""
+enum StoriesSelectColumn {
+  """column name"""
+  contents
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  hashid
+
+  """column name"""
+  id
+
+  """column name"""
+  previewContent
+
+  """column name"""
+  previewImage
+
+  """column name"""
+  publishedAt
+
+  """column name"""
+  status
+
+  """column name"""
+  title
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  userId
+}
+
+"""
+input type for updating data in table "stories"
+"""
+input StoriesSetInput {
+  contents: String
+  createdAt: timestamptz
+  hashid: String
+  id: Int
+  previewContent: String
+  previewImage: String
+  publishedAt: timestamptz
+  status: content_status
+  title: String
+  updatedAt: timestamptz
+  userId: Int
+}
+
+"""aggregate stddev on columns"""
+type StoriesStddevFields {
+  id: Float
+  userId: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type StoriesStddev_popFields {
+  id: Float
+  userId: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type StoriesStddev_sampFields {
+  id: Float
+  userId: Float
+}
+
+"""
+Streaming cursor of the table "stories"
+"""
+input StoriesStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: StoriesStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input StoriesStreamCursorValueInput {
+  contents: String
+  createdAt: timestamptz
+  hashid: String
+  id: Int
+  previewContent: String
+  previewImage: String
+  publishedAt: timestamptz
+  status: content_status
+  title: String
+  updatedAt: timestamptz
+  userId: Int
+}
+
+"""aggregate sum on columns"""
+type StoriesSumFields {
+  id: Int
+  userId: Int
+}
+
+"""
+update columns of table "stories"
+"""
+enum StoriesUpdateColumn {
+  """column name"""
+  contents
+
+  """column name"""
+  createdAt
+
+  """column name"""
+  hashid
+
+  """column name"""
+  id
+
+  """column name"""
+  previewContent
+
+  """column name"""
+  previewImage
+
+  """column name"""
+  publishedAt
+
+  """column name"""
+  status
+
+  """column name"""
+  title
+
+  """column name"""
+  updatedAt
+
+  """column name"""
+  userId
+}
+
+input StoriesUpdates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: StoriesIncInput
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: StoriesSetInput
+
+  """filter the rows which have to be updated"""
+  where: StoriesBoolExp!
+}
+
+"""aggregate var_pop on columns"""
+type StoriesVar_popFields {
+  id: Float
+  userId: Float
+}
+
+"""aggregate var_samp on columns"""
+type StoriesVar_sampFields {
+  id: Float
+  userId: Float
+}
+
+"""aggregate variance on columns"""
+type StoriesVarianceFields {
+  id: Float
+  userId: Float
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input StringComparisonExp {
+  _eq: String
+  _gt: String
+  _gte: String
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _isNull: Boolean
+
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
+  _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+"""
+Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
+"""
+input TimestamptzComparisonExp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _isNull: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+
+"""Scalar _Any"""
+scalar _Any
+
+"""A union of all types that use the @key directive"""
+union _Entity = Stories
+
+type _Service {
+  """SDL representation of schema"""
+  sdl: String!
+}
+
+type account_serviceMutation {
+  getToken(input: GetTokenRequest!): GetTokenResponse!
+  signUp(input: SignUpRequest!): SignUpResponse!
+}
+
+type account_serviceQueryRoot {
+  sayHello(name: String!): String!
+}
+
+type accounts_mutation_frontend {
+  """
+  delete data from the table: "accounts"
+  """
+  deleteAccounts(
+    """filter the rows which have to be deleted"""
+    where: AccountsBoolExp!
+  ): AccountsMutationResponse
+
+  """
+  delete single row from the table: "accounts"
+  """
+  deleteAccountsByPk(id: Int!): Accounts
+
+  """
+  insert data into the table: "accounts"
+  """
+  insertAccounts(
+    """the rows to be inserted"""
+    objects: [AccountsInsertInput!]!
+
+    """upsert condition"""
+    onConflict: AccountsOnConflict
+  ): AccountsMutationResponse
+
+  """
+  insert a single row into the table: "accounts"
+  """
+  insertAccountsOne(
+    """the row to be inserted"""
+    object: AccountsInsertInput!
+
+    """upsert condition"""
+    onConflict: AccountsOnConflict
+  ): Accounts
+
+  """
+  update data of the table: "accounts"
+  """
+  updateAccounts(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: AccountsIncInput
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: AccountsSetInput
+
+    """filter the rows which have to be updated"""
+    where: AccountsBoolExp!
+  ): AccountsMutationResponse
+
+  """
+  update single row of the table: "accounts"
+  """
+  updateAccountsByPk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: AccountsIncInput
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: AccountsSetInput
+    pk_columns: AccountsPkColumnsInput!
+  ): Accounts
+
+  """
+  update multiples rows of table: "accounts"
+  """
+  updateAccountsMany(
+    """updates to execute, in order"""
+    updates: [AccountsUpdates!]!
+  ): [AccountsMutationResponse]
+}
+
+type accounts_query {
+  """
+  fetch data from the table: "accounts"
+  """
+  accounts(
+    """distinct select on columns"""
+    distinctOn: [AccountsSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [AccountsOrderBy!]
+
+    """filter the rows returned"""
+    where: AccountsBoolExp
+  ): [Accounts!]!
+
+  """
+  fetch aggregated fields from the table: "accounts"
+  """
+  accountsAggregate(
+    """distinct select on columns"""
+    distinctOn: [AccountsSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [AccountsOrderBy!]
+
+    """filter the rows returned"""
+    where: AccountsBoolExp
+  ): AccountsAggregate!
+
+  """fetch data from the table: "accounts" using primary key columns"""
+  accountsByPk(id: Int!): Accounts
+}
+
+type accounts_subscription {
+  """
+  fetch data from the table: "accounts"
+  """
+  accounts(
+    """distinct select on columns"""
+    distinctOn: [AccountsSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [AccountsOrderBy!]
+
+    """filter the rows returned"""
+    where: AccountsBoolExp
+  ): [Accounts!]!
+
+  """
+  fetch aggregated fields from the table: "accounts"
+  """
+  accountsAggregate(
+    """distinct select on columns"""
+    distinctOn: [AccountsSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [AccountsOrderBy!]
+
+    """filter the rows returned"""
+    where: AccountsBoolExp
+  ): AccountsAggregate!
+
+  """fetch data from the table: "accounts" using primary key columns"""
+  accountsByPk(id: Int!): Accounts
+
+  """
+  fetch data from the table in a streaming manner: "accounts"
+  """
+  accountsStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [AccountsStreamCursorInput]!
+
+    """filter the rows returned"""
+    where: AccountsBoolExp
+  ): [Accounts!]!
+}
+
+scalar content_status
+
+type contents_viewQuery {
+  contentsView(contents: String!, id: Int!, type: String!): String
+}
+
+"""mutation root"""
+type mutation_root {
+  account_service: account_serviceMutation
+  accounts: accounts_mutation_frontend
+  stories: stories_mutation_frontend
+  views_count: views_countMutation
+}
+
+type query_root {
+  """query _Entity union"""
+  _entities(representations: [_Any!]!): _Entity
+  _service: _Service!
+  account_service: account_serviceQueryRoot
+  accounts: accounts_query
+  contents_view: contents_viewQuery
+  stories: stories_query
+  views_count: views_countQuery
+}
+
+type stories_mutation_frontend {
+  """
+  delete data from the table: "stories"
+  """
+  deleteStories(
+    """filter the rows which have to be deleted"""
+    where: StoriesBoolExp!
+  ): StoriesMutationResponse
+
+  """
+  delete single row from the table: "stories"
+  """
+  deleteStoriesByPk(id: Int!): Stories
+
+  """
+  insert data into the table: "stories"
+  """
+  insertStories(
+    """the rows to be inserted"""
+    objects: [StoriesInsertInput!]!
+
+    """upsert condition"""
+    onConflict: StoriesOnConflict
+  ): StoriesMutationResponse
+
+  """
+  insert a single row into the table: "stories"
+  """
+  insertStoriesOne(
+    """the row to be inserted"""
+    object: StoriesInsertInput!
+
+    """upsert condition"""
+    onConflict: StoriesOnConflict
+  ): Stories
+
+  """
+  update data of the table: "stories"
+  """
+  updateStories(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: StoriesIncInput
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: StoriesSetInput
+
+    """filter the rows which have to be updated"""
+    where: StoriesBoolExp!
+  ): StoriesMutationResponse
+
+  """
+  update single row of the table: "stories"
+  """
+  updateStoriesByPk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: StoriesIncInput
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: StoriesSetInput
+    pk_columns: StoriesPkColumnsInput!
+  ): Stories
+
+  """
+  update multiples rows of table: "stories"
+  """
+  updateStoriesMany(
+    """updates to execute, in order"""
+    updates: [StoriesUpdates!]!
+  ): [StoriesMutationResponse]
+}
+
+type stories_query {
+  """
+  fetch data from the table: "stories"
+  """
+  stories(
+    """distinct select on columns"""
+    distinctOn: [StoriesSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [StoriesOrderBy!]
+
+    """filter the rows returned"""
+    where: StoriesBoolExp
+  ): [Stories!]!
+
+  """
+  fetch aggregated fields from the table: "stories"
+  """
+  storiesAggregate(
+    """distinct select on columns"""
+    distinctOn: [StoriesSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [StoriesOrderBy!]
+
+    """filter the rows returned"""
+    where: StoriesBoolExp
+  ): StoriesAggregate!
+
+  """fetch data from the table: "stories" using primary key columns"""
+  storiesByPk(id: Int!): Stories
+}
+
+type stories_subscription {
+  """
+  fetch data from the table: "stories"
+  """
+  stories(
+    """distinct select on columns"""
+    distinctOn: [StoriesSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [StoriesOrderBy!]
+
+    """filter the rows returned"""
+    where: StoriesBoolExp
+  ): [Stories!]!
+
+  """
+  fetch aggregated fields from the table: "stories"
+  """
+  storiesAggregate(
+    """distinct select on columns"""
+    distinctOn: [StoriesSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [StoriesOrderBy!]
+
+    """filter the rows returned"""
+    where: StoriesBoolExp
+  ): StoriesAggregate!
+
+  """fetch data from the table: "stories" using primary key columns"""
+  storiesByPk(id: Int!): Stories
+
+  """
+  fetch data from the table in a streaming manner: "stories"
+  """
+  storiesStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [StoriesStreamCursorInput]!
+
+    """filter the rows returned"""
+    where: StoriesBoolExp
+  ): [Stories!]!
+}
+
+type subscription_root {
+  accounts: accounts_subscription
+  stories: stories_subscription
+}
+
+scalar timestamptz
+
+type views_countMutation {
+  incrementStoryView(hashid: String!): StatusResponse
+}
+
+type views_countQuery {
+  healthcheck: String!
+}
+

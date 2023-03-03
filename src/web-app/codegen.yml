@@ -1,6 +1,6 @@
 overwrite: true
-schema: ${GRAPHQL_API_HOST}
-documents: "**/*.{gql,graphql}"
+schema: "./graphql/schema.graphql"
+documents: "./graphql/**/**.gql"
 generates:
   ./graphql/generated/schema.ts:
     plugins:

@@ -19,7 +19,7 @@ export default function Document({ children }: DocumentProps) {
 
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
+        <LiveReload port={80} />
       </Box>
     </html>
   );

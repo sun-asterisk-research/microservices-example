@@ -8,17 +8,14 @@ declare global {
 
   interface AuthUser {
     id: number;
-    createdAt?: string | null;
-    updatedAt?: string | null;
-    accountId: number;
-    name: string;
+    fullname: string;
     username: string;
-    picture?: string | null;
-    isAdmin?: boolean;
+    avatar?: string | null;
   }
 
   interface AppState {
     authUser: AuthUser | null;
     env: EnvBag;
+    isAuthUser: boolean;
   }
 }

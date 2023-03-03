@@ -1,0 +1,7 @@
+mutation IncrementStoryView($hashid: String!) {
+  views_count {
+    incrementStoryView(hashid: $hashid) {
+      success
+    }
+  }
+}

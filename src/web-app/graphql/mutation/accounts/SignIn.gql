@@ -1,0 +1,8 @@
+mutation SignIn($input: GetTokenRequest!) {
+  account_service {
+    getToken(input: $input) {
+      success
+      accessToken
+    }
+  }
+}

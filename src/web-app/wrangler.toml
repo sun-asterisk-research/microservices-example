@@ -12,7 +12,7 @@ command = "npm run build && sed -i 's/typeof module<\"u\"/false/' build/index.js
 
 [vars]
 GOOGLE_ANALYTICS_ID = ""
-GRAPHQL_API_HOST = "http://localhost:8788"
+GRAPHQL_API_HOST = "http://hasura.blog.local/v1/graphql"
 
 [env.production]
 name = "viblo-asia-clone"
