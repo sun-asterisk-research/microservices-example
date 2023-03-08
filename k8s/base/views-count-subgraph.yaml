@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: views-count-subgraph
+  labels:
+    app: views-count-subgraph
+spec:
+  selector:
+    matchLabels:
+      app: views-count-subgraph
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: views-count-subgraph
+    spec:
+      containers:
+      - name:  views-count-subgraph
+        image: ghcr.io/sun-asterisk-research/microservices-sample/views-count-subgraph
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+        env: []
+        ports:
+        - containerPort: 4000
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: views-count-subgraph
+spec:
+  selector:
+    app: views-count-subgraph
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 4000

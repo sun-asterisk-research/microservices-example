@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  contents-view-subgraph
+  labels:
+    app: contents-view-subgraph
+spec:
+  selector:
+    matchLabels:
+      app: contents-view-subgraph
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: contents-view-subgraph
+    spec:
+      containers:
+      - name:  contents-view-subgraph
+        image: ghcr.io/sun-asterisk-research/microservices-sample/contents-view-subgraph
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+        env: []
+        # - name: GRAPHQL_API_HOST
+        #   value: "http://hasura/v1/graphql"
+        ports:
+        - containerPort: 4000
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: contents-view-subgraph
+spec:
+  selector:
+    app: contents-view-subgraph
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 4000

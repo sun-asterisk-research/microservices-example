@@ -1,0 +1,95 @@
+apiVersion: skaffold/v3
+kind: Config
+metadata:
+  name: microservices-example
+
+manifests:
+  kustomize:
+    paths:
+      - "k8s/production"
+
+build:
+  local:
+    useBuildkit: false
+    push: false
+  artifacts:
+  - image: ghcr.io/sun-asterisk-research/microservices-example/account-service
+    context: src/account-service
+    docker:
+      dockerfile: dockerfiles/prod.Dockerfile
+  - image: ghcr.io/sun-asterisk-research/microservices-example/account-subgraph
+    context: src/account-subgraph
+    docker:
+      dockerfile: dockerfiles/prod.Dockerfile
+  - image: ghcr.io/sun-asterisk-research/microservices-example/contents-view-subgraph
+    context: src/contents-view-subgraph
+    docker:
+      dockerfile: dockerfiles/prod.Dockerfile
+  - image: ghcr.io/sun-asterisk-research/microservices-example/views-count-subgraph
+    context: src/views-count-subgraph
+    docker:
+      dockerfile: dockerfiles/prod.Dockerfile
+  - image: ghcr.io/sun-asterisk-research/microservices-example/views-count-service
+    context: src/views-count-service
+    docker:
+      dockerfile: dockerfiles/prod.Dockerfile
+
+profiles:
+  - name: dev
+    manifests:
+      kustomize:
+        paths:
+          - "k8s/dev"
+    build:
+      local:
+        useBuildkit: false
+        push: false
+      artifacts:
+      - image: ghcr.io/sun-asterisk-research/microservices-example/web-app
+        context: src/web-app
+        docker:
+          dockerfile: dockerfiles/dev.Dockerfile
+        sync:
+          manual:
+            - dest: .
+              src: "**/*.{ts,tsx,js,gql,json,toml,yml}"
+      - image: ghcr.io/sun-asterisk-research/microservices-example/account-service
+        context: src/account-service
+        docker:
+          dockerfile: dockerfiles/dev.Dockerfile
+        sync:
+          manual:
+            - dest: .
+              src: "**/*.{go,mod,sum}"
+      - image: ghcr.io/sun-asterisk-research/microservices-example/account-subgraph
+        context: src/account-subgraph
+        docker:
+          dockerfile: dockerfiles/dev.Dockerfile
+        sync:
+          manual:
+            - dest: .
+              src: "**/*.{rs,lock,toml,proto}"
+      - image: ghcr.io/sun-asterisk-research/microservices-example/contents-view-subgraph
+        context: src/contents-view-subgraph
+        docker:
+          dockerfile: dockerfiles/dev.Dockerfile
+        sync:
+          manual:
+            - dest: .
+              src: "**/*.{ts,json}"
+      - image: ghcr.io/sun-asterisk-research/microservices-example/views-count-subgraph
+        context: src/views-count-subgraph
+        docker:
+          dockerfile: dockerfiles/dev.Dockerfile
+        sync:
+          manual:
+            - dest: .
+              src: "**/*.{ts,json}"
+      - image: ghcr.io/sun-asterisk-research/microservices-example/views-count-service
+        context: src/views-count-service
+        docker:
+          dockerfile: dockerfiles/dev.Dockerfile
+        sync:
+          manual:
+            - dest: .
+              src: "**/*.{rs,lock,toml,proto}"

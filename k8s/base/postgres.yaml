@@ -1,0 +1,183 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  postgres
+  labels:
+    app:  postgres
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app:  postgres
+    spec:
+      containers:
+      - name:  postgres
+        image:  postgres:14-alpine
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 500m
+            memory: 500Mi
+        envFrom:
+          - configMapRef:
+              name: "postgres"
+        ports:
+        - containerPort:  5432
+          name:  postgres
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+        - name: postgresql
+          mountPath: /var/run/postgresql
+        - name: postgres-init-script
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: postgres-data
+          hostPath:
+            path: /var/microservices-sample/postgresql-data
+        - name: postgresql
+          hostPath:
+            path: /var/microservices-sample/postgresql
+        - name: postgres-init-script
+          configMap:
+            name: postgres-scripts
+      restartPolicy: Always
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: postgres
+data:
+  POSTGRES_DB: "hasura"
+  POSTGRES_USER: "hasura"
+  POSTGRES_PASSWORD: "secret"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  selector:
+    app: postgres
+  type: ClusterIP
+  ports:
+  - port: 5432
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: postgres-scripts
+data:
+  dbinit.sql: |
+    /* Prepare accounts */
+    /* Prepare databases */
+    /* Create database stories */
+    DO
+    $$
+    BEGIN
+      IF EXISTS (SELECT FROM pg_database WHERE datname = 'stories') THEN
+        RAISE NOTICE 'Database stories already exists, skipping';
+      END IF;
+    END
+    $$;
+
+    SELECT 'CREATE DATABASE stories OWNER hasura' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'stories'); \gexec
+    /* Create database accounts */
+    DO
+    $$
+    BEGIN
+      IF EXISTS (SELECT FROM pg_database WHERE datname = 'accounts') THEN
+        RAISE NOTICE 'Database accounts already exists, skipping';
+      END IF;
+    END
+    $$;
+
+    SELECT 'CREATE DATABASE accounts OWNER hasura' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'accounts'); \gexec
+    /* Create roles for stories and grant privileges */
+
+    \c stories
+    DO $$
+    BEGIN
+      /* Create stories_readonly role */
+      CREATE ROLE stories_readonly NOLOGIN;
+
+      /* Grant access to all tables */
+      GRANT CONNECT ON DATABASE stories TO stories_readonly;
+      GRANT USAGE ON SCHEMA public TO stories_readonly;
+      GRANT SELECT ON ALL TABLES IN SCHEMA public TO stories_readonly;
+      GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO stories_readonly;
+      GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO stories_readonly;
+
+      /* Grant access to future tables created by hasura (owner) */
+      ALTER DEFAULT PRIVILEGES FOR ROLE hasura IN SCHEMA public GRANT SELECT ON TABLES TO stories_readonly;
+      ALTER DEFAULT PRIVILEGES FOR ROLE hasura IN SCHEMA public GRANT SELECT ON SEQUENCES TO stories_readonly;
+      ALTER DEFAULT PRIVILEGES FOR ROLE hasura IN SCHEMA public GRANT EXECUTE ON FUNCTIONS TO stories_readonly;
+    EXCEPTION WHEN DUPLICATE_OBJECT THEN
+      RAISE NOTICE 'Role stories_readonly already exists, skipping';
+    END
+    $$;
+
+    DO $$
+    BEGIN
+      /* Create stories_readwrite role */
+      CREATE ROLE stories_readwrite NOLOGIN;
+
+      /* Grant write privileges */
+      GRANT stories_readonly TO stories_readwrite;
+      GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO stories_readwrite;
+
+      /* Grant write privileges to future tables created by hasura (owner) */
+      ALTER DEFAULT PRIVILEGES FOR ROLE hasura IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO stories_readwrite;
+    EXCEPTION WHEN DUPLICATE_OBJECT THEN
+      RAISE NOTICE 'Role stories_readwrite already exists, skipping';
+    END
+    $$;
+
+    \c hasura
+    /* Create roles for accounts and grant privileges */
+
+    \c accounts
+    DO $$
+    BEGIN
+      /* Create accounts_readonly role */
+      CREATE ROLE accounts_readonly NOLOGIN;
+
+      /* Grant access to all tables */
+      GRANT CONNECT ON DATABASE accounts TO accounts_readonly;
+      GRANT USAGE ON SCHEMA public TO accounts_readonly;
+      GRANT SELECT ON ALL TABLES IN SCHEMA public TO accounts_readonly;
+      GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO accounts_readonly;
+      GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO accounts_readonly;
+
+      /* Grant access to future tables created by hasura (owner) */
+      ALTER DEFAULT PRIVILEGES FOR ROLE hasura IN SCHEMA public GRANT SELECT ON TABLES TO accounts_readonly;
+      ALTER DEFAULT PRIVILEGES FOR ROLE hasura IN SCHEMA public GRANT SELECT ON SEQUENCES TO accounts_readonly;
+      ALTER DEFAULT PRIVILEGES FOR ROLE hasura IN SCHEMA public GRANT EXECUTE ON FUNCTIONS TO accounts_readonly;
+    EXCEPTION WHEN DUPLICATE_OBJECT THEN
+      RAISE NOTICE 'Role accounts_readonly already exists, skipping';
+    END
+    $$;
+
+    DO $$
+    BEGIN
+      /* Create accounts_readwrite role */
+      CREATE ROLE accounts_readwrite NOLOGIN;
+
+      /* Grant write privileges */
+      GRANT accounts_readonly TO accounts_readwrite;
+      GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO accounts_readwrite;
+
+      /* Grant write privileges to future tables created by hasura (owner) */
+      ALTER DEFAULT PRIVILEGES FOR ROLE hasura IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO accounts_readwrite;
+    EXCEPTION WHEN DUPLICATE_OBJECT THEN
+      RAISE NOTICE 'Role accounts_readwrite already exists, skipping';
+    END
+    $$;
+
+    \c hasura
