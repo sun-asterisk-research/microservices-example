@@ -46,5 +46,5 @@ hasura migrate apply
 ### Custom domain
 
 ```
-0.0.0.0 hasura.local blog.local
+0.0.0.0 hasura.blog.local blog.local
 ```
