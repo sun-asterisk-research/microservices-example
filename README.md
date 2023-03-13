@@ -1,6 +1,6 @@
-# Sample Microservices Application
+# microservices-example
 
-This project is a simple blog in microservices with Kubernetes, GraphQL and gRPC. The blog is a web app where users can register/login, browse stories, comment, write stories and add them to their collections.
+This project is a simple blog in microservices with Kubernetes, GraphQL and gRPC. The blog is a web app where users can register/login, browse stories.
 
 ## Architecture
 
