@@ -83,6 +83,7 @@ kind: Ingress
 metadata:
   name: hasura
 spec:
+  ingressClassName: nginx
   rules:
     - host: hasura.blog.local
       http:

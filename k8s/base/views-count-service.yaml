@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: views-count-service
-        image: ghcr.io/sun-asterisk-research/microservices-sample/views-count-service
+        image: ghcr.io/sun-asterisk-research/microservices-example/views-count-service
         imagePullPolicy: IfNotPresent
         resources:
           requests:

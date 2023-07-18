@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: account-service
-        image: ghcr.io/sun-asterisk-research/microservices-sample/account-service
+        image: ghcr.io/sun-asterisk-research/microservices-example/account-service
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 50051
