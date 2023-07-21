@@ -17,9 +17,24 @@ type AccountServiceConfig struct {
 
 	JWTCertPath string `mapstructure:"JWT_CERT_PATH"`
 	JWTAudience string `mapstructure:"JWT_AUDIENCE"`
+
+	Tracing TracingConfig `mapstructure:",squash"`
+}
+
+type TracingConfig struct {
+	Enable bool         `mapstructure:"TRACING_ENABLE"`
+	Jaeger JaegerConfig `mapstructure:",squash"`
+}
+
+type JaegerConfig struct {
+	URL string `mapstructure:"JAEGER_URL"`
 }
 
 var Values *AccountServiceConfig
+
+func Tracing() TracingConfig {
+	return Values.Tracing
+}
 
 func ReadEnv() {
 	viper.SetConfigFile(".env")
@@ -36,6 +51,7 @@ func ReadEnv() {
 
 	viper.SetDefault("JWT_CERT_PATH", "/jwt-cert")
 	viper.SetDefault("JWT_AUDIENCE", "blog")
+	viper.SetDefault("TRACING_ENABLE", false)
 
 	viper.ReadInConfig()
 	viper.AutomaticEnv()
