@@ -5,3 +5,9 @@ yarn-error.log*
 
 # VS Code
 .vscode
+
+# IDE
+.idea
+
+# Ignore DevSpace cache and log folder
+.devspace/

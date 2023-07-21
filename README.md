@@ -18,29 +18,43 @@ This project is a simple blog in microservices with Kubernetes, GraphQL and gRPC
 
 ## Quickstart
 
-- K8s cluster required (Minikube, .etc)
+- K8s cluster required (Minikube, k3s, .etc)
+- [DevSpace](https://www.devspace.sh/)
 - Clone this repo
 
-### Run containers
+### Run containers with DevSpace
 
 ```bash
-skaffold run
+$ devspace deploy
 ```
 
 ### Dev mode
 
-If you want to start containers & watch for sourcecode changes for development. Use the `dev` command instead of `skaffold run`:
+If you want to start containers & watch for sourcecode changes for development. Use the `dev` command instead of `devspace deploy`:
 
 ```bash
-skaffold dev -p dev
+$ devspace dev
+```
+
+At the first run, DevSpace will build base image, you can skip this action at next run by
+
+```shell
+$ devspace dev --skip-build
 ```
 
 ### Setup Hasura
 
+Install [Hasura CLI](https://hasura.io/docs/latest/hasura-cli/install-hasura-cli/)
+
+```shell
+curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+```
+
+Run from host machine
 ```bash
 # cd src/hasura
-hasura metadata apply
-hasura migrate apply
+hasura metadata apply --admin-secret <secret>
+hasura migrate apply --admin-secret <secret>
 ```
 
 ### Custom domain

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name:  contents-view-subgraph
-        image: ghcr.io/sun-asterisk-research/microservices-sample/contents-view-subgraph
+        image: ghcr.io/sun-asterisk-research/microservices-example/contents-view-subgraph
         imagePullPolicy: IfNotPresent
         resources:
           requests:

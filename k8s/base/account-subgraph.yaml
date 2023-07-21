@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: account-subgraph
-        image: ghcr.io/sun-asterisk-research/microservices-sample/account-subgraph
+        image: ghcr.io/sun-asterisk-research/microservices-example/account-subgraph
         imagePullPolicy: IfNotPresent
         resources:
           requests:
