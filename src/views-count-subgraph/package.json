@@ -11,6 +11,14 @@
   },
   "dependencies": {
     "@apollo/server": "^4.4.1",
+    "@opentelemetry/api": "^1.4.1",
+    "@opentelemetry/auto-instrumentations-node": "^0.38.0",
+    "@opentelemetry/exporter-jaeger": "^1.15.1",
+    "@opentelemetry/exporter-metrics-otlp-proto": "^0.41.0",
+    "@opentelemetry/exporter-trace-otlp-proto": "^0.41.0",
+    "@opentelemetry/sdk-metrics": "^1.15.0",
+    "@opentelemetry/sdk-node": "^0.41.0",
+    "dotenv": "^16.3.1",
     "esm": "^3.2.25",
     "graphql": "^16.6.0"
   },

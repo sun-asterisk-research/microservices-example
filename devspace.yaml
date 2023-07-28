@@ -94,7 +94,7 @@ dev:
   views-count-subgraph:
     labelSelector:
       app: views-count-subgraph
-    devImage: ghcr.io/sun-asterisk-research/microservices-example/rust:latest
+    devImage: node:16-alpine
     sync:
       - path: ./src/views-count-subgraph:/src
         startContainer: true
