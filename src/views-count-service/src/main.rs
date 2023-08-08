@@ -1,12 +1,11 @@
 use tonic::{transport::Server, Request, Response, Status};
 use redis::{Commands, RedisError};
 use views_count::views_count_server::{ViewsCount, ViewsCountServer};
-use views_count::{IncrementStoryViewRequest, Empty};
-use error::FromRedisError;
+use views_count::{IncrementStoryViewRequest, StatusResponse};
+// use error::FromRedisError;
 use opentelemetry::{sdk::{trace::{self, RandomIdGenerator, Sampler}, Resource}, global, KeyValue};
 use tracing_subscriber::prelude::*;
 use tracing_opentelemetry;
-use tracing_subscriber::Registry;
 
 mod views_count;
 mod store;
@@ -21,16 +20,40 @@ impl ViewsCount for ViewsCountService {
     async fn increment_story_view(
         &self,
         request: Request<IncrementStoryViewRequest>,
-    ) -> Result<Response<Empty>, Status> {
+    ) -> Result<Response<StatusResponse>, Status> {
         println!("Got a request from {:?}", request.remote_addr());
+        let body = request.into_inner();
 
         let mut conn = store::connect();
-        let a: Result<i32, RedisError> = conn.set("key", "value");
+
+        let exists: Result<bool, RedisError> = conn.exists(format!("{}/{}", body.hashid, body.fingerprint));
+
+        match exists {
+            Ok(exists) => {
+                if exists {
+                    println!("Key '{}' exists in Redis.", format!("{}/{}", body.hashid, body.fingerprint));
+                    return Ok(Response::new(StatusResponse{ success: false }));
+                } else {
+                    println!("Key '{}' does not exist in Redis.", format!("{}/{}", body.hashid, body.fingerprint));
+                }
+            }
+            Err(err) => {
+                eprintln!("Error checking key existence: {}", err);
+            }
+        }
+
+        let a: Result<String, RedisError> = conn.set_ex(
+            format!("{}/{}", body.hashid, body.fingerprint),
+            "value",
+            60
+        );
 
         match a {
-            Ok(_) => Ok(Response::new(Empty{})),
+            Ok(_) => {
+                Ok(Response::new(StatusResponse{ success: true }))
+            }
             Err(err) => {
-                Err(err.to_grpc_status())
+                Ok(Response::new(StatusResponse{ success: false }))
             }
         }
     }
@@ -61,7 +84,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .with(tracing_opentelemetry::layer().with_tracer(tracer))
         .try_init()?;
 
-    let addr = "[::1]:50052".parse().unwrap();
+    let addr = "0.0.0.0:50052".parse().unwrap();
     let svc = ViewsCountService::default();
 
     println!("ViewsCountServer listening on {}", addr);

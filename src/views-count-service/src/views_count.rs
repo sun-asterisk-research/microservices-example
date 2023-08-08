@@ -9,6 +9,12 @@ pub struct IncrementStoryViewRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Empty {}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StatusResponse {
+    #[prost(bool, tag = "1")]
+    pub success: bool,
+}
 /// Generated server implementations.
 pub mod views_count_server {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -19,7 +25,7 @@ pub mod views_count_server {
         async fn increment_story_view(
             &self,
             request: tonic::Request<super::IncrementStoryViewRequest>,
-        ) -> Result<tonic::Response<super::Empty>, tonic::Status>;
+        ) -> Result<tonic::Response<super::StatusResponse>, tonic::Status>;
     }
     #[derive(Debug)]
     pub struct ViewsCountServer<T: ViewsCount> {
@@ -87,7 +93,7 @@ pub mod views_count_server {
                         T: ViewsCount,
                     > tonic::server::UnaryService<super::IncrementStoryViewRequest>
                     for IncrementStoryViewSvc<T> {
-                        type Response = super::Empty;
+                        type Response = super::StatusResponse;
                         type Future = BoxFuture<
                             tonic::Response<Self::Response>,
                             tonic::Status,

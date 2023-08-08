@@ -1,5 +1,5 @@
 {
-  "name": "content-view",
+  "name": "views-count-subgraph",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
@@ -19,12 +19,16 @@
     "@opentelemetry/sdk-node": "^0.41.0",
     "dotenv": "^16.3.1",
     "esm": "^3.2.25",
-    "graphql": "^16.6.0"
+    "graphql": "^16.6.0",
+    "grpc": "^1.24.3"
   },
   "devDependencies": {
     "@types/node": "^18.15.0",
     "nodemon": "^2.0.21",
     "npm-run-all": "^4.1.5",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "@types/google-protobuf": "^3.7.2",
+    "grpc-tools": "^1.9.1",
+    "grpc_tools_node_protoc_ts": "^4.1.2"
   }
 }
