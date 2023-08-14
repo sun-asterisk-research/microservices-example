@@ -52,7 +52,7 @@ impl ViewsCount for ViewsCountService {
             Ok(_) => {
                 Ok(Response::new(StatusResponse{ success: true }))
             }
-            Err(err) => {
+            Err(_) => {
                 Ok(Response::new(StatusResponse{ success: false }))
             }
         }
