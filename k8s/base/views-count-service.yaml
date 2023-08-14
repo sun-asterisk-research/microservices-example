@@ -37,6 +37,6 @@ spec:
     app: views-count-service
   type: ClusterIP
   ports:
-  - name: http
-    port: 80
+  - name: grpc
+    port: 50052
     targetPort: 50052

@@ -64,8 +64,6 @@ dev:
     sync:
       - path: ./src/web-app:/src
         startContainer: true
-        excludePaths:
-          - node_modules/
         uploadExcludePaths:
           - node_modules/
     workingDir: /src
@@ -78,6 +76,10 @@ dev:
     sync:
       - path: ./src/contents-view-subgraph:/src
         startContainer: true
+        excludePaths:
+          - dist/
+        uploadExcludePaths:
+          - node_modules/
     workingDir: /src
     command: [ "./devspace_start.sh" ]
 
@@ -98,5 +100,7 @@ dev:
     sync:
       - path: ./src/views-count-subgraph:/src
         startContainer: true
+        uploadExcludePaths:
+          - node_modules/
     workingDir: /src
     command: [ "./devspace_start.sh" ]
