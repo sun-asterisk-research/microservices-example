@@ -29,6 +29,7 @@ import {
 } from "@tabler/icons";
 import { useContext, useState } from "react";
 import { AppContext } from "~/contexts/app";
+import {redirect} from "@remix-run/router";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -66,8 +67,20 @@ const useStyles = createStyles((theme) => ({
 export default function Header() {
   const { classes, cx } = useStyles();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const theme = useMantineTheme();
   const { authUser, isAuthUser } = useContext(AppContext);
+
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSearchInputKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      console.log("press enter")
+      window.location.href = `/search?title=${searchQuery}`
+    }
+  };
 
   return (
     <BaseHeader
@@ -116,6 +129,9 @@ export default function Header() {
         >
           <Input
             placeholder="Search"
+            value={searchQuery}
+            onChange={handleSearchInputChange}
+            onKeyDownCapture={handleSearchInputKeyDown}
             icon={<IconSearch size={16} stroke={1.5} />}
           />
         </Box>

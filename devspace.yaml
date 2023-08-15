@@ -54,6 +54,8 @@ dev:
     sync:
       - path: ./src/account-subgraph:/src
         startContainer: true
+        uploadExcludePaths:
+          - target/
     workingDir: /src
     command: ["./devspace_start.sh"]
 
@@ -90,6 +92,8 @@ dev:
     sync:
       - path: ./src/views-count-service:/src
         startContainer: true
+        uploadExcludePaths:
+          - target/
     workingDir: /src
     command: [ "./devspace_start.sh" ]
 
