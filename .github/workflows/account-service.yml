@@ -1,3 +1,5 @@
+name: account-service
+
 on:
   pull_request:
     paths:
