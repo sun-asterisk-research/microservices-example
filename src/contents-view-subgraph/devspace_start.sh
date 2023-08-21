@@ -35,6 +35,9 @@ export PATH="./bin:$PATH"
 # Open shell
 bash --norc
 
+# Must install Git
+apk add git
+
 # Start app
 yarn install --production=false --frozen-lockfile
 yarn dev

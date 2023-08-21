@@ -1,0 +1,16 @@
+query SearchStory($search: String = "%%") {
+  stories {
+    stories(where: {title: {_ilike: $search}}) {
+      title
+      publishedAt
+      hashid
+      previewImage
+      previewContent
+      author {
+        fullname
+        username
+        avatar
+      }
+    }
+  }
+}
