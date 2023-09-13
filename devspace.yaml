@@ -18,11 +18,13 @@ images:
   go-base:
     image: ghcr.io/sun-asterisk-research/microservices-example/go
     dockerfile: ./docker/go.Dockerfile
+    context: docker
     tags:
       - latest
   rust-base:
     image: ghcr.io/sun-asterisk-research/microservices-example/rust
     dockerfile: ./docker/rust.Dockerfile
+    context: docker
     tags:
       - latest
 
@@ -69,7 +71,7 @@ dev:
         uploadExcludePaths:
           - node_modules/
     workingDir: /src
-    command: [ "./devspace_start.sh" ]
+    command: ["./devspace_start.sh"]
 
   contents-view-subgraph:
     labelSelector:
@@ -83,7 +85,7 @@ dev:
         uploadExcludePaths:
           - node_modules/
     workingDir: /src
-    command: [ "./devspace_start.sh" ]
+    command: ["./devspace_start.sh"]
 
   views-count-service:
     labelSelector:
@@ -95,7 +97,7 @@ dev:
         uploadExcludePaths:
           - target/
     workingDir: /src
-    command: [ "./devspace_start.sh" ]
+    command: ["./devspace_start.sh"]
 
   views-count-subgraph:
     labelSelector:
@@ -107,4 +109,4 @@ dev:
         uploadExcludePaths:
           - node_modules/
     workingDir: /src
-    command: [ "./devspace_start.sh" ]
+    command: ["./devspace_start.sh"]
