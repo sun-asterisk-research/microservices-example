@@ -11,3 +11,7 @@ yarn-error.log
 .vscode
 
 graphql/generated
+
+
+# Ignore DevSpace cache and log folder
+.devspace/
