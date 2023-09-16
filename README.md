@@ -50,6 +50,12 @@ Install [Hasura CLI](https://hasura.io/docs/latest/hasura-cli/install-hasura-cli
 curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
 ```
 
+Port-forwarding Hasura to your local machine for using Hasura CLI:
+
+```bash
+devspace open
+```
+
 Run from host machine:
 
 ```bash
