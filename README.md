@@ -50,11 +50,13 @@ Install [Hasura CLI](https://hasura.io/docs/latest/hasura-cli/install-hasura-cli
 curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
 ```
 
-Run from host machine
+Run from host machine:
+
 ```bash
 # cd src/hasura
 hasura metadata apply --admin-secret <secret>
 hasura migrate apply --admin-secret <secret>
+hasura seed apply --admin-secret <secret>
 ```
 
 ### Custom domain
