@@ -5,6 +5,3 @@ dependencies:
   hasura:
     path: src/hasura
     pipeline: dev
-  # web-app:
-  #   path: src/web-app
-  #   pipeline: dev

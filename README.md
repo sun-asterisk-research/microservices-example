@@ -44,29 +44,21 @@ $ devspace dev --skip-build
 
 ### Setup Hasura
 
-Install [Hasura CLI](https://hasura.io/docs/latest/hasura-cli/install-hasura-cli/)
+If `src/hasura/**` folder contains files change. You need to import Hasura metadata and migrations.
 
-```shell
-curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
-```
-
-Port-forwarding Hasura to your local machine for using Hasura CLI:
+Please run the following command:
 
 ```bash
-devspace open
-```
+# Access the Hasura CLI container:
+devspace enter -l app=hasura -c cli
 
-Run from host machine:
+# Import metadata:
+hasura-cli metadata apply
 
-```bash
-# cd src/hasura
-hasura metadata apply --admin-secret <secret>
-hasura migrate apply --admin-secret <secret>
-hasura seed apply --admin-secret <secret>
-```
+# Apply database migrations:
+hasura-cli migrate apply --all-databases
 
-### Custom domain
-
-```
-0.0.0.0 hasura.blog.local blog.local
+# Seeding data:
+hasura-cli metadata reload
+hasura-cli seed apply --all-databases
 ```
