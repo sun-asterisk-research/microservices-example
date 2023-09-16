@@ -4,7 +4,8 @@ metadata:
   name: hasura-config
 data:
   HASURA_GRAPHQL_METADATA_DATABASE_URL: "postgres://hasura:secret@postgres:5432/hasura"
-  PG_DATABASE_URL: "postgres://hasura:secret@postgres:5432/hasura"
+  PG_DB_ACCOUNTS_URL: "postgres://hasura:secret@postgres:5432/accounts"
+  PG_DB_STORIES_URL: "postgres://hasura:secret@postgres:5432/stories"
   HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
   HASURA_GRAPHQL_DEV_MODE: "true"
   HASURA_GRAPHQL_ENABLED_LOG_TYPES: "startup, http-log, webhook-log, websocket-log, query-log"
