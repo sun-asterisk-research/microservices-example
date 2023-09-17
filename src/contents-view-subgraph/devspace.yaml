@@ -1,0 +1,61 @@
+version: v2beta1
+name: contents-view-subgraph
+
+vars:
+  IMAGE: ghcr.io/sun-asterisk-research/microservices-example/contents-view-subgraph
+
+pipelines:
+  dev:
+    run: |-
+      run_dependencies --all                      # 1. Deploy any projects this project needs (see "dependencies")
+      ensure_pull_secrets --all                   # 2. Ensure pull secrets
+      create_deployments --all                    # 3. Deploy Helm charts and manifests specfied as "deployments"
+      start_dev contents-view-subgraph            # 4. Start dev mode "contents-view-subgraph" (see "dev" section)
+  deploy:
+    run: |-
+      run_dependencies --all                            # 1. Deploy any projects this project needs (see "dependencies")
+      ensure_pull_secrets --all                         # 2. Ensure pull secrets
+      build_images --all -t $(git describe --always)    # 3. Build, tag (git commit hash) and push all images (see "images")
+      create_deployments --all                          # 4. Deploy Helm charts and manifests specfied as "deployments"
+
+images:
+  contents-view-subgraph:
+    image: ${IMAGE}
+    dockerfile: ./dockerfiles/prod.Dockerfile
+    context: ./
+
+deployments:
+  contents-view-subgraph:
+    helm:
+      chart:
+        name: component-chart
+        repo: https://charts.devspace.sh
+      values:
+        labels:
+          app: contents-view-subgraph
+        containers:
+          - image: ${IMAGE}
+        service:
+          ports:
+            - port: 4000
+
+dev:
+  contents-view-subgraph:
+    imageSelector: ${IMAGE}
+    devImage: ghcr.io/loft-sh/devspace-containers/javascript:18-alpine
+    ports:
+      - port: "4000"
+    workingDir: /contents-view-subgraph
+    sync:
+      - path: ./
+        uploadExcludePaths:
+          - node_modules
+        startContainer: true
+    command: ["./devspace_start.sh"]
+    persistPaths:
+      - path: ./node_modules
+
+dependencies:
+  hasura:
+    path: ../hasura
+    pipeline: dev

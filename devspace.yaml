@@ -14,3 +14,6 @@ dependencies:
   account-subgraph:
     path: src/account-subgraph
     pipeline: dev
+  contents-view-subgraph:
+    path: src/contents-view-subgraph
+    pipeline: dev
