@@ -8,3 +8,9 @@ dependencies:
   web-app:
     path: src/web-app
     pipeline: dev
+  account-service:
+    path: src/account-service
+    pipeline: dev
+  account-subgraph:
+    path: src/account-subgraph
+    pipeline: dev

@@ -5,26 +5,27 @@ COLOR_BLUE="\033[0;94m"
 COLOR_GREEN="\033[0;92m"
 COLOR_RESET="\033[0m"
 
-# Print useful output for user
-echo -e "${COLOR_BLUE}
-     %########%
-     %###########%       ____                 _____
-         %#########%    |  _ \   ___ __   __ / ___/  ____    ____   ____ ___
-         %#########%    | | | | / _ \\\\\ \ / / \___ \ |  _ \  / _  | / __// _ \\
-     %#############%    | |_| |(  __/ \ V /  ____) )| |_) )( (_| |( (__(  __/
-     %#############%    |____/  \___|  \_/   \____/ |  __/  \__,_| \___\\\\\___|
- %###############%                                  |_|
- %###########%${COLOR_RESET}
+# 1. Set terminal prompt
+# 2. Include project's bin/ folder in PATH
+echo "export PS1=\"\[${COLOR_BLUE}\]devspace\[${COLOR_RESET}\] ./\W \[${COLOR_BLUE}\]\\$\[${COLOR_RESET}\] \"" >~/.bashrc
+echo 'if [ -z "$BASH" ]; then export PS1="$ "; fi' >>~/.bashrc
+echo 'export PATH="./bin:$PATH"' >>~/.bashrc
 
+if [ ! -f "/usr/include/google/protoc" ]; then
+  echo 'Install protobuf v3.20.3'
+  wget https://github.com/protocolbuffers/protobuf/releases/download/v3.20.3/protoc-3.20.3-linux-x86_64.zip &&
+    unzip -o protoc-3.20.3-linux-x86_64.zip -d /usr &&
+    rm -rf protoc-3.20.3-linux-x86_64.zip &&
+    cp /usr/bin/protoc /usr/include/google
+else
+  cp /usr/include/google/protoc /usr/bin/protoc
+fi
 
-Welcome to your development container!
+echo 'Fetching dependencies...'
+cargo fetch
 
-This is how you can work with it:
-- Files will be synchronized between your local machine and this container
-- Some ports will be forwarded, so you can access this container via localhost
-- Run \`${COLOR_GREEN}cargo build${COLOR_RESET}\` to build gRPC stuff
-- Run \`${COLOR_GREEN}cargo watch -x run${COLOR_RESET}\` to start the service in the watch mode
-"
+echo 'Tonic build...'
+cargo build
 
-# cargo build
-# cargo watch -x run
+echo 'Starting application...'
+cargo watch -x run

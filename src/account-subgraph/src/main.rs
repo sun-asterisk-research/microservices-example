@@ -24,6 +24,10 @@ async fn graphql_playground() -> impl IntoResponse {
     ))
 }
 
+async fn health() -> &'static str {
+    "OK"
+}
+
 async fn graphql_handler(
     Extension(schema): Extension<AccountSchema>,
     req: GraphQLRequest,
@@ -43,6 +47,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let app = Router::new()
         .route("/", get(graphql_playground).post(graphql_handler))
+        .route("/health", get(health))
         .layer(Extension(schema));
 
     println!("Playground: http://localhost:8000");
