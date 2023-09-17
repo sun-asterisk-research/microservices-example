@@ -31,6 +31,8 @@ deployments:
         name: component-chart
         repo: https://charts.devspace.sh
       values:
+        labels:
+          app: web-app
         containers:
           - image: ${IMAGE}
         service:
@@ -42,19 +44,21 @@ dev:
   web-app:
     imageSelector: ${IMAGE}
     devImage: ghcr.io/loft-sh/devspace-containers/javascript:18-alpine
+    ports:
+      - port: "8787"
+      - port: "40510"
+    workingDir: /web-app
     sync:
       - path: ./
         uploadExcludePaths:
           - node_modules
-        uploadExcludeFile: .dockerignore
-    workingDir: /web-app
+          - build
+          - .cache
+        startContainer: true
+    command: ["./devspace_start.sh"]
     persistPaths:
-      - path: /web-app/node_modules
-    terminal:
-      command: ./devspace_start.sh
-      disableScreen: true
-    ports:
-      - port: "40510"
-      - port: "8787"
+      - path: "/web-app/node_modules"
+      - path: "/web-app/build"
+      - path: "/web-app/.cache"
     open:
       - url: http://localhost:8787

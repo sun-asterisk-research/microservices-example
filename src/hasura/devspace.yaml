@@ -94,13 +94,13 @@ dev:
   hasura:
     imageSelector: hasura/graphql-engine:v2.33.3
     ports:
-      - port: "8080:8080"
+      - port: "8080"
   hasura-cli:
     imageSelector: hasura/graphql-engine:v2.33.3.cli-migrations-v3
     workingDir: /hasura
     ports:
-      - port: "9695:9695"
-      - port: "9693:9693"
+      - port: "9695"
+      - port: "9693"
     sync:
       - path: ./:/hasura
         excludePaths:

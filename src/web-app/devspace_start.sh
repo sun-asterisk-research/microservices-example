@@ -1,6 +1,8 @@
 #!/bin/bash
 set +e # Continue on errors
 
+ls -la
+
 export NODE_ENV=development
 if [ -f "yarn.lock" ]; then
   echo "Installing Yarn Dependencies"
@@ -41,3 +43,5 @@ This is how you can work with it:
 echo 'export PS1="\[${COLOR_BLUE}\]devspace\[${COLOR_RESET}\] ./\W \[${COLOR_BLUE}\]\\$\[${COLOR_RESET}\] "' >~/.bashrc
 echo 'if [ -z "$BASH" ]; then export PS1="$ "; fi' >>~/.bashrc
 echo 'export PATH="./bin:$PATH"' >>~/.bashrc
+
+yarn dev
