@@ -62,3 +62,8 @@ dev:
       - path: "/web-app/.cache"
     open:
       - url: http://localhost:8787
+
+dependencies:
+  hasura:
+    path: ../hasura
+    pipeline: dev

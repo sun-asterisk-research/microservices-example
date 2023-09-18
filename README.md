@@ -4,6 +4,8 @@ This project is a simple blog in microservices with Kubernetes, GraphQL and gRPC
 
 ## Architecture
 
+See [diagram](./architecture.png):
+
 | Service                 | Language | Technical stack       | Description                                        |
 | ----------------------- | -------- | --------------------- | -------------------------------------------------- |
 | hasura                  | Haskell  | GraphQL               | API Gateway, Authentication, Authorization, access |
@@ -19,27 +21,35 @@ This project is a simple blog in microservices with Kubernetes, GraphQL and gRPC
 ## Quickstart
 
 - K8s cluster required (Minikube, k3s, .etc)
-- [DevSpace](https://www.devspace.sh/)
+- [DevSpace](https://www.devspace.sh/) installed
 - Clone this repo
 
-### Run containers with DevSpace
-
 ```bash
-$ devspace deploy
+devspace deploy
 ```
+
+## Development
+
+This project uses Devspace's Dependencies feature for building and developing microservices. Each project is defined as a dependency project. It allows running one or a few microservices instead of all.
 
 ### Dev mode
 
 If you want to start containers & watch for sourcecode changes for development. Use the `dev` command instead of `devspace deploy`:
 
 ```bash
-$ devspace dev
+devspace dev --dependency hasura,web-app
 ```
 
 At the first run, DevSpace will build base image, you can skip this action at next run by
 
 ```shell
-$ devspace dev --skip-build
+devspace dev --skip-build
+```
+
+Resync source files for running dev containers:
+
+```bash
+devspace sync --config devspace.yaml --upload-only
 ```
 
 ### Setup Hasura
