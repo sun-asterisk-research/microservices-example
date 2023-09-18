@@ -1,16 +1,16 @@
 version: v2beta1
-name: account-subgraph
+name: views-count-subgraph
 
 vars:
-  IMAGE: ghcr.io/sun-asterisk-research/microservices-example/account-subgraph
+  IMAGE: ghcr.io/sun-asterisk-research/microservices-example/views-count-subgraph
 
 pipelines:
   dev:
     run: |-
-      run_dependencies --all        # 1. Deploy any projects this project needs (see "dependencies")
-      ensure_pull_secrets --all     # 2. Ensure pull secrets
-      create_deployments --all      # 3. Deploy Helm charts and manifests specfied as "deployments"
-      start_dev account-subgraph    # 4. Start dev mode "account-subgraph" (see "dev" section)
+      run_dependencies --all                      # 1. Deploy any projects this project needs (see "dependencies")
+      ensure_pull_secrets --all                   # 2. Ensure pull secrets
+      create_deployments --all                    # 3. Deploy Helm charts and manifests specfied as "deployments"
+      start_dev views-count-subgraph              # 4. Start dev mode "views-count-subgraph" (see "dev" section)
   deploy:
     run: |-
       run_dependencies --all                            # 1. Deploy any projects this project needs (see "dependencies")
@@ -19,44 +19,44 @@ pipelines:
       create_deployments --all                          # 4. Deploy Helm charts and manifests specfied as "deployments"
 
 images:
-  account-subgraph:
+  views-count-subgraph:
     image: ${IMAGE}
     dockerfile: ./dockerfiles/prod.Dockerfile
     context: ./
 
 deployments:
-  account-subgraph:
+  views-count-subgraph:
     helm:
       chart:
         name: component-chart
         repo: https://charts.devspace.sh
       values:
         labels:
-          app: account-subgraph
+          app: views-count-subgraph
         containers:
           - image: ${IMAGE}
         service:
           ports:
-            - port: 8000
+            - port: 4000
 
 dev:
-  account-subgraph:
-    labelSelector:
-      app: account-subgraph
-    devImage: ghcr.io/kimyvgy/rustdev:1.71-bullseye
-    workingDir: /account-subgraph
+  views-count-subgraph:
+    imageSelector: ${IMAGE}
+    devImage: ghcr.io/loft-sh/devspace-containers/javascript:18-alpine
+    ports:
+      - port: "4000"
+    workingDir: /views-count-subgraph
     sync:
       - path: ./
         uploadExcludePaths:
-          - target/
+          - node_modules
+          - dist
         startContainer: true
     command: ["./devspace_start.sh"]
     persistPaths:
-      - path: ./target
-      - path: /usr/include/google/
-      - path: /usr/local/cargo/registry/
+      - path: ./node_modules
 
 dependencies:
-  account-service:
-    path: ../account-service
+  views-count-service:
+    path: ../views-count-service
     pipeline: dev
