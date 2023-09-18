@@ -1,0 +1,76 @@
+version: v2beta1
+name: account-service
+
+vars:
+  IMAGE: ghcr.io/sun-asterisk-research/microservices-example/account-service
+
+pipelines:
+  dev:
+    run: |-
+      run_dependencies --all       # 1. Deploy any projects this project needs (see "dependencies")
+      ensure_pull_secrets --all    # 2. Ensure pull secrets
+      create_deployments --all     # 3. Deploy Helm charts and manifests specfied as "deployments"
+      start_dev account-service    # 4. Start dev mode "account-service" (see "dev" section)
+  deploy:
+    run: |-
+      run_dependencies --all                            # 1. Deploy any projects this project needs (see "dependencies")
+      ensure_pull_secrets --all                         # 2. Ensure pull secrets
+      build_images --all -t $(git describe --always)    # 3. Build, tag (git commit hash) and push all images (see "images")
+      create_deployments --all                          # 4. Deploy Helm charts and manifests specfied as "deployments"
+
+images:
+  account-service:
+    image: ${IMAGE}
+    dockerfile: ./dockerfiles/prod.Dockerfile
+    context: ./
+
+deployments:
+  configs:
+    kubectl:
+      manifests:
+        - "../../k8s/account-service/env.yaml"
+        - "../../k8s/account-service/jwt-cert.yaml"
+  account-service:
+    helm:
+      chart:
+        name: component-chart
+        repo: https://charts.devspace.sh
+      values:
+        labels:
+          app: account-service
+        containers:
+          - image: ${IMAGE}
+            envFrom:
+              - configMapRef:
+                  name: account-service-env
+            volumeMounts:
+              - containerPath: /jwt-cert
+                volume:
+                  name: jwt-cert
+                  readOnly: true
+        volumes:
+          - name: jwt-cert
+            configMap:
+              name: jwt-cert
+        service:
+          ports:
+            - port: 50051
+
+dev:
+  account-service:
+    labelSelector:
+      app: account-service
+    devImage: ghcr.io/loft-sh/devspace-containers/go:1.20-alpine
+    workingDir: /account-service
+    sync:
+      - path: ./
+        startContainer: true
+    command: ["./devspace_start.sh"]
+    persistPaths:
+      - path: /go/pkg/mod
+      - path: /go/bin
+
+dependencies:
+  hasura:
+    path: ../hasura
+    pipeline: dev

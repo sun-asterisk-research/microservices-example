@@ -1,0 +1,110 @@
+version: v2beta1
+name: hasura
+
+pipelines:
+  dev:
+    run: |-
+      run_dependencies --all       # 1. Deploy any projects this project needs (see "dependencies")
+      ensure_pull_secrets --all    # 2. Ensure pull secrets
+      create_deployments --all     # 3. Deploy Helm charts and manifests specfied as "deployments"
+      start_dev --all              # 4. Start dev mode (see "dev" section)
+  deploy:
+    run: |-
+      run_dependencies --all                            # 1. Deploy any projects this project needs (see "dependencies")
+      ensure_pull_secrets --all                         # 2. Ensure pull secrets
+      build_images --all -t $(git describe --always)    # 3. Build, tag (git commit hash) and push all images (see "images")
+      create_deployments --all                          # 4. Deploy Helm charts and manifests specfied as "deployments"
+
+deployments:
+  configs:
+    kubectl:
+      manifests:
+        - "../../k8s/postgres/db-config.yaml"
+        - "../../k8s/postgres/db-init.yaml"
+        - "../../k8s/hasura/config.yaml"
+  postgres:
+    helm:
+      chart:
+        name: component-chart
+        repo: https://charts.devspace.sh
+      values:
+        labels:
+          app: postgres
+        containers:
+          - image: postgres:14-alpine
+            envFrom:
+              - configMapRef:
+                  name: postgres-db-config
+            volumeMounts:
+              - containerPath: /docker-entrypoint-initdb.d
+                volume:
+                  name: postgres-db-init
+                  readOnly: true
+              - containerPath: /var/lib/postgresql/data
+                volume:
+                  name: postgres-data
+        service:
+          ports:
+            - port: 5432
+        volumes:
+          - name: postgres-db-init
+            configMap:
+              name: postgres-db-init
+          - name: postgres-data
+            hostPath:
+              path: /var/microservices-example/postgresql
+  hasura:
+    helm:
+      chart:
+        name: component-chart
+        repo: https://charts.devspace.sh
+      values:
+        labels:
+          app: hasura
+        containers:
+          - name: hasura
+            image: hasura/graphql-engine:v2.33.3
+            envFrom:
+              - configMapRef:
+                  name: hasura-config
+          - name: cli
+            image: hasura/graphql-engine:v2.33.3.cli-migrations-v3
+            envFrom:
+              - configMapRef:
+                  name: hasura-config
+        initContainers:
+          - name: init-postgres
+            image: eficode/wait-for:latest
+            command:
+              - "/app/wait-for"
+              - "postgres:5432"
+              - "-t"
+              - "60"
+              - "-q"
+              - "--"
+              - "echo"
+              - "Postgres is ready"
+        service:
+          ports:
+            - port: 8080
+            - port: 9695
+            - port: 9693
+
+dev:
+  hasura:
+    imageSelector: hasura/graphql-engine:v2.33.3
+    ports:
+      - port: "8080"
+  hasura-cli:
+    imageSelector: hasura/graphql-engine:v2.33.3.cli-migrations-v3
+    workingDir: /hasura
+    ports:
+      - port: "9695"
+      - port: "9693"
+    sync:
+      - path: ./:/hasura
+        excludePaths:
+          - "devspace.yaml"
+          - ".gitignore"
+        startContainer: true
+    command: ["./devspace_start.sh"]

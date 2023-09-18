@@ -1,5 +1,4 @@
 version: 3
-endpoint: http://hasura.blog.local
 api_paths:
   v1_query: v1/query
   v2_query: v2/query

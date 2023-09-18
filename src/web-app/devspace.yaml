@@ -1,0 +1,64 @@
+version: v2beta1
+name: web-app
+
+vars:
+  IMAGE: ghcr.io/sun-asterisk-research/microservices-example/web-app
+
+pipelines:
+  dev:
+    run: |-
+      run_dependencies --all       # 1. Deploy any projects this project needs (see "dependencies")
+      ensure_pull_secrets --all    # 2. Ensure pull secrets
+      create_deployments --all     # 3. Deploy Helm charts and manifests specfied as "deployments"
+      start_dev web-app            # 4. Start dev mode "web-app" (see "dev" section)
+  deploy:
+    run: |-
+      run_dependencies --all                            # 1. Deploy any projects this project needs (see "dependencies")
+      ensure_pull_secrets --all                         # 2. Ensure pull secrets
+      build_images --all -t $(git describe --always)    # 3. Build, tag (git commit hash) and push all images (see "images")
+      create_deployments --all                          # 4. Deploy Helm charts and manifests specfied as "deployments"
+
+images:
+  web-app:
+    image: ${IMAGE}
+    dockerfile: ./dockerfiles/prod.Dockerfile
+    context: ./
+
+deployments:
+  web-app:
+    helm:
+      chart:
+        name: component-chart
+        repo: https://charts.devspace.sh
+      values:
+        labels:
+          app: web-app
+        containers:
+          - image: ${IMAGE}
+        service:
+          ports:
+            - port: 8787
+            - port: 40510
+
+dev:
+  web-app:
+    imageSelector: ${IMAGE}
+    devImage: ghcr.io/loft-sh/devspace-containers/javascript:18-alpine
+    ports:
+      - port: "8787"
+      - port: "40510"
+    workingDir: /web-app
+    sync:
+      - path: ./
+        uploadExcludePaths:
+          - node_modules
+          - build
+          - .cache
+        startContainer: true
+    command: ["./devspace_start.sh"]
+    persistPaths:
+      - path: "/web-app/node_modules"
+      - path: "/web-app/build"
+      - path: "/web-app/.cache"
+    open:
+      - url: http://localhost:8787
