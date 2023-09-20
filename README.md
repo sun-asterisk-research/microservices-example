@@ -47,10 +47,6 @@ This project uses Devspace's Dependencies feature for building and developing mi
 
 ```bash
 devspace dev --dependency hasura,web-app
-
-# or
-cd src/web-app
-devspace dev
 ```
 
 ### Dev mode

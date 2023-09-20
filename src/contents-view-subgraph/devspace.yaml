@@ -54,8 +54,7 @@ dev:
     command: ["./devspace_start.sh"]
     persistPaths:
       - path: ./node_modules
-
-dependencies:
-  hasura:
-    path: ../hasura
-    pipeline: dev
+# dependencies:
+#   hasura:
+#     path: ../hasura
+#     pipeline: dev

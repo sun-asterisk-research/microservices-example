@@ -69,8 +69,7 @@ dev:
     persistPaths:
       - path: /go/pkg/mod
       - path: /go/bin
-
-dependencies:
-  hasura:
-    path: ../hasura
-    pipeline: dev
+# dependencies:
+#   hasura:
+#     path: ../hasura
+#     pipeline: dev

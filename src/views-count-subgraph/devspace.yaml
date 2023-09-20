@@ -55,8 +55,7 @@ dev:
     command: ["./devspace_start.sh"]
     persistPaths:
       - path: ./node_modules
-
-dependencies:
-  views-count-service:
-    path: ../views-count-service
-    pipeline: dev
+# dependencies:
+#   views-count-service:
+#     path: ../views-count-service
+#     pipeline: dev
