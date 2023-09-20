@@ -24,13 +24,34 @@ See [diagram](./architecture.png):
 - [DevSpace](https://www.devspace.sh/) installed
 - Clone this repo
 
+Deploy this project on your local cluster:
+
 ```bash
 devspace deploy -p local
+```
+
+Now you can open:
+
+- http://localhost:8787 : Web application
+- http://localhost:8080 : Hasura console
+
+Please use the following command:
+
+```bash
+devspace open
 ```
 
 ## Development
 
 This project uses Devspace's Dependencies feature for building and developing microservices. Each project is defined as a dependency project. It allows running one or a few microservices instead of all.
+
+```bash
+devspace dev --dependency hasura,web-app
+
+# or
+cd src/web-app
+devspace dev
+```
 
 ### Dev mode
 
