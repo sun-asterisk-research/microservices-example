@@ -25,7 +25,7 @@ See [diagram](./architecture.png):
 - Clone this repo
 
 ```bash
-devspace deploy
+devspace deploy -p local
 ```
 
 ## Development

@@ -5,15 +5,27 @@ dependencies:
   hasura:
     path: src/hasura
     pipeline: dev
-  web-app:
-    path: src/web-app
-    pipeline: dev
-  account-service:
-    path: src/account-service
-    pipeline: dev
-  account-subgraph:
-    path: src/account-subgraph
-    pipeline: dev
-  contents-view-subgraph:
-    path: src/contents-view-subgraph
-    pipeline: dev
+  # web-app:
+  #   path: src/web-app
+  #   pipeline: dev
+  # account-service:
+  #   path: src/account-service
+  #   pipeline: dev
+  # account-subgraph:
+  #   path: src/account-subgraph
+  #   pipeline: dev
+  # contents-view-subgraph:
+  #   path: src/contents-view-subgraph
+  #   pipeline: dev
+
+profiles:
+  - name: deploy
+    patches:
+      - op: remove
+        path: dependencies[*].pipeline
+      - op: replace
+        path: dependencies.hasura.profiles
+        value:
+          - deploy
+  - name: local
+    parent: deploy

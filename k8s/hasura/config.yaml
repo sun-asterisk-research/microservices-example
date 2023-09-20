@@ -3,6 +3,8 @@ apiVersion: v1
 metadata:
   name: hasura-config
 data:
+  HASURA_GRAPHQL_MIGRATIONS_DIR: "/hasura/migrations"
+  HASURA_GRAPHQL_METADATA_DIR: "/hasura/metadata"
   HASURA_GRAPHQL_METADATA_DATABASE_URL: "postgres://hasura:secret@postgres:5432/hasura"
   PG_DB_ACCOUNTS_URL: "postgres://hasura:secret@postgres:5432/accounts"
   PG_DB_STORIES_URL: "postgres://hasura:secret@postgres:5432/stories"
