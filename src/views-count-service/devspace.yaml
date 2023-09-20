@@ -55,7 +55,3 @@ dev:
       - path: ./target
       - path: /usr/include/google/
       - path: /usr/local/cargo/registry/
-# dependencies:
-#   hasura:
-#     path: ../hasura
-#     pipeline: dev
