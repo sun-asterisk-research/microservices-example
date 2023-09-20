@@ -18,7 +18,7 @@ RUN cargo build -r -p views_count_service
 
 FROM debian:buster
 
-RUN apt-get update && apt-get install tzdata libssl-dev -y
+RUN apt-get update && apt-get install tzdata libssl-dev curl -y
 RUN adduser \
   --disabled-password \
   --gecos "" \

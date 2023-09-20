@@ -8,7 +8,7 @@ export const resolvers = {
   },
 
   Mutation: {
-    incrementStoryView: (_, { hashid }, { fingerprint }: ServerContext) => {
+    incrementStoryView: (_: any, { hashid }: any, { fingerprint }: ServerContext) => {
       console.log({ countKey: `increment/story/${hashid}/${fingerprint}` })
 
       const request = new IncrementStoryViewRequest();

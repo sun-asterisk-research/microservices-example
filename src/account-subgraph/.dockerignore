@@ -1,2 +1,9 @@
 target
 .git
+.env
+.env.*
+.gitignore
+.devspace
+devspace_start.sh
+devspace.yaml
+README.md

@@ -13,9 +13,12 @@ RUN yarn build
 
 FROM node:16-alpine
 
+WORKDIR /src
+
 COPY package.json yarn.lock ./
 RUN yarn install --production=true --frozen-lockfile
 
+COPY proto proto
 COPY --from=builder /src/dist dist
 
 CMD ["yarn", "start"]
