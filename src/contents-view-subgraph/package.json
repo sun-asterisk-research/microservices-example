@@ -3,15 +3,16 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
+    "dev": "cross-env NODE_ENV=development nodemon -r esm src/index.ts",
     "build": "cross-env NODE_ENV=production tsc -p .",
-    "start": "cross-env NODE_ENV=production node dist/index.js"
+    "start": "cross-env NODE_ENV=production node -r esm dist/index.js"
   },
   "dependencies": {
     "@apollo/server": "^4.4.1",
     "cross-env": "^7.0.3",
+    "esm": "^3.2.25",
     "graphql": "^16.6.0",
-    "viblo-sdk": "0.1.0-beta.24"
+    "viblo-sdk": "^0.1.0-beta.34"
   },
   "devDependencies": {
     "@types/node": "^20.6.3",
