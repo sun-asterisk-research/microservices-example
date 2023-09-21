@@ -74,6 +74,20 @@ deployments:
             envFrom:
               - configMapRef:
                   name: hasura-config
+            livenessProbe:
+              httpGet:
+                path: /healthz?strict=false
+                port: 8080
+              initialDelaySeconds: 110
+              periodSeconds: 5
+              timeoutSeconds: 3
+            readinessProbe:
+              httpGet:
+                path: /healthz?strict=false
+                port: 8080
+              initialDelaySeconds: 110
+              periodSeconds: 5
+              timeoutSeconds: 3
           - name: cli
             image: hasura/graphql-engine:v2.33.3.cli-migrations-v3
             envFrom:
