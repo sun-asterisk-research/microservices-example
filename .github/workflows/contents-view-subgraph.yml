@@ -35,6 +35,8 @@ jobs:
           context: ./src/contents-view-subgraph
           file: ./src/contents-view-subgraph/dockerfiles/prod.Dockerfile
           push: ${{ github.event_name == 'push' }}
-          tags: ghcr.io/${{ github.repository_owner }}/microservices-example/contents-view-subgraph:build-${{ github.run_number }}
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/microservices-example/contents-view-subgraph:build-${{ github.run_number }}
+            ghcr.io/${{ github.repository_owner }}/microservices-example/contents-view-subgraph:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
