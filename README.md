@@ -27,7 +27,7 @@ See [diagram](./architecture.png):
 Deploy this project on your local cluster:
 
 ```bash
-devspace deploy -p local
+devspace deploy -p local -t latest
 ```
 
 Now you can open:
